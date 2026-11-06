@@ -1,13 +1,48 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>idea-jam</title>
+    <meta name="theme-color" content="#f3eee3" />
+    <meta
+      name="description"
+      content="IDEA JAM es un generador de tópicos random para tu próxima landing, SaaS, juego o experimento web. Pulsa, mezcla y construye."
+    />
+    <meta property="og:title" content="IDEA JAM — tópicos random para tu próxima web" />
+    <meta
+      property="og:description"
+      content="Un generador neo-brutalista de ideas para proyectos web: tipo, tema, restricción y stack en un solo clic."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;600;700&family=Silkscreen:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>IDEA JAM — tópicos random para tu próxima web</title>
+    <script>
+      document.documentElement.classList.add('js')
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <script defer src="%BASE_URL%dist/core.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/bitbug.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/pip.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/moss.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/boing.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/kitty.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/mochi.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/gloop.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/dice.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/star.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/bolt.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/heart.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/marquee.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/flap.min.js"></script>
+    <script defer src="%BASE_URL%dist/c/divider.min.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
