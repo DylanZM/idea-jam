@@ -69,23 +69,23 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
       <div className="container">
         <div className="section-head generator-head">
           <div>
-            <span className="eyebrow">// EL GENERADOR</span>
+            <span className="eyebrow">02 / EL GENERADOR</span>
             <h2>
-              Pulsa.
+              Tira.
               <br />
               <em>Mezcla.</em>
               <br />
-              Construye.
+              Publica.
             </h2>
           </div>
           <div className="generator-intro">
             <p>
-              Cada tirada combina un formato, un nicho y una restricción. No hay ideas buenas
-              ni malas: hay ideas con o sin brief.
+              Cada tirada cruza un formato, un nicho y una restricción. El resultado no es una
+              idea perfecta: es una idea que puedes empezar hoy.
             </p>
             <span className="generator-tag">
               <Sparkle className="icon" />
-              MODO CAOS ACTIVADO
+              SIN CUENTA / SIN EXCUSAS
             </span>
           </div>
         </div>
@@ -94,32 +94,32 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
           <div className="machine-top">
             <span className="machine-name">
               <Terminal className="icon" />
-              IDEA MACHINE / 1.0
+              GENERADOR / 01
             </span>
             <span className={`status-pill${isRolling ? ' is-busy' : ''}`}>
               <span className="status-dot" aria-hidden />
-              {isRolling ? 'GIRANDO' : 'LISTO'}
+              {isRolling ? 'GIRANDO' : 'READY'}
             </span>
           </div>
 
           <div className="reels" aria-busy={isRolling}>
             <Slot
               index="01"
-              label="TIPO"
+              label="FORMATO"
               value={isRolling ? reel.type : idea.type.slot}
               accent="lime"
               rolling={isRolling}
             />
             <Slot
               index="02"
-              label="TEMA"
+              label="NICHO"
               value={isRolling ? reel.theme : idea.theme.label}
               accent="coral"
               rolling={isRolling}
             />
             <Slot
               index="03"
-              label="TWIST"
+              label="RESTRICCIÓN"
               value={isRolling ? reel.twist : idea.twist.label}
               accent="violet"
               rolling={isRolling}

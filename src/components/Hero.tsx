@@ -15,53 +15,56 @@ const combinationsLabel = new Intl.NumberFormat('es').format(combinations)
 export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
   return (
     <section className="hero" id="top">
-      <div className="hero-bg" aria-hidden>
-        <span className="bg-block bg-block-lime" />
-        <span className="bg-block bg-block-coral" />
-        <span className="bg-block bg-block-violet" />
-      </div>
+      <div className="hero-grid-bg" aria-hidden />
+      <span className="hero-rail" aria-hidden>
+        GENERADOR DE TÓPICOS / RANDOM / 2026
+      </span>
 
       <div className="container hero-grid">
         <div className="hero-copy">
-          <div className="chip">
-            <span className="chip-dot" aria-hidden />
-            RANDOM PROJECT GENERATOR
-            <span className="chip-version">V1.0</span>
+          <div className="kicker">
+            <span className="kicker-index">01</span>
+            MÁQUINA DE TÓPICOS
+            <span className="kicker-status">ONLINE</span>
           </div>
 
           <h1 className="hero-title">
-            ¿Y si hoy construyes algo <mark>raro</mark>?
+            No sabes
+            <br />
+            qué
+            <br />
+            <mark>construir.</mark>
             <piix-pal pal="bitbug" scale="3" />
           </h1>
 
           <p className="hero-sub">
-            Tópicos random para tu próxima landing, SaaS, juego o experimento. Un tipo, un tema
-            y una restricción. Suficiente para dejar de mirar la pantalla en blanco.
+            Un formato, un nicho y una restricción al azar. La excusa perfecta para empezar tu
+            próxima landing, SaaS o experimento antes de que se te ocurra otra cosa.
           </p>
 
           <div className="hero-actions">
-            <a className="btn btn-lime btn-lg" href="#generador" onClick={onGenerate}>
+            <a className="btn btn-orange btn-lg" href="#generador" onClick={onGenerate}>
               GENERAR IDEA
               <ArrowDown className="icon" />
             </a>
-            <a className="btn btn-paper btn-lg" href="#historial">
+            <a className="btn btn-outline btn-lg" href="#historial">
               VER HISTORIAL
               <ArrowRight className="icon" />
             </a>
           </div>
 
           <p className="hero-hint">
-            <kbd>G</kbd> para generar otra · <span className="hint-strong">{combinationsLabel}</span>{' '}
-            combinaciones posibles
+            <kbd>G</kbd> PARA OTRA TIRADA <span className="hint-slash">/</span>{' '}
+            <strong>{combinationsLabel}</strong> COMBINACIONES
           </p>
 
           <dl className="hero-stats">
             <div>
-              <dt>Tipos</dt>
+              <dt>Formatos</dt>
               <dd>{PROJECT_TYPES.length}</dd>
             </div>
             <div>
-              <dt>Temas</dt>
+              <dt>Nichos</dt>
               <dd>{THEMES.length}</dd>
             </div>
             <div>
@@ -75,69 +78,63 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
           </dl>
         </div>
 
-        <div className="hero-console-wrap">
-          <span className="sticker sticker-top" aria-hidden>
-            <Sparkle className="icon" />
-            NO HAY EXCUSAS
-          </span>
-          <span className="sticker sticker-bottom" aria-hidden>
-            PIXEL POWERED
+        <div className="brief-wrap">
+          <span className="brief-slip" aria-hidden>
+            OPEN CALL / IDEA RANDOM / 24H
           </span>
 
-          <div className={`console${isRolling ? ' console-busy' : ''}`}>
-            <div className="console-bar">
-              <span className="console-dots" aria-hidden>
-                <i />
-                <i />
-                <i />
+          <article className={`brief${isRolling ? ' brief-busy' : ''}`}>
+            <header className="brief-top">
+              <span>PROJECT BRIEF</span>
+              <span>Nº {idea.id}</span>
+            </header>
+
+            <div className="brief-type">
+              <span className="brief-type-label">FORMATO</span>
+              <strong>{isRolling ? '— — —' : idea.type.slot}</strong>
+            </div>
+
+            <dl className="brief-fields">
+              <div>
+                <dt>TEMA</dt>
+                <dd>{isRolling ? '...' : idea.theme.label}</dd>
+              </div>
+              <div>
+                <dt>RESTRICCIÓN</dt>
+                <dd>{isRolling ? '...' : idea.twist.label}</dd>
+              </div>
+              <div>
+                <dt>STACK</dt>
+                <dd>{isRolling ? '...' : idea.stack.label}</dd>
+              </div>
+              <div>
+                <dt>NIVEL</dt>
+                <dd>{isRolling ? '...' : difficultyLabel(idea.difficulty)}</dd>
+              </div>
+            </dl>
+
+            <footer className="brief-foot">
+              <span className="brief-barcode" aria-hidden>
+                {Array.from({ length: 28 }, (_, index) => (
+                  <i key={index} />
+                ))}
               </span>
-              <span className="console-name">idea.exe</span>
-              <span className="console-status">{isRolling ? 'MEZCLANDO' : 'EN LÍNEA'}</span>
-            </div>
+              <span className="brief-seed">SEED {idea.seed.toString(16).toUpperCase()}</span>
+            </footer>
 
-            <div className="console-body">
-              <p className="console-line">
-                <span className="console-prompt">$</span> idea --random
-              </p>
-              <dl className="console-list">
-                <div>
-                  <dt>tipo</dt>
-                  <dd>{isRolling ? '...' : idea.type.label}</dd>
-                </div>
-                <div>
-                  <dt>tema</dt>
-                  <dd>{isRolling ? '...' : idea.theme.label}</dd>
-                </div>
-                <div>
-                  <dt>twist</dt>
-                  <dd>{isRolling ? '...' : idea.twist.label}</dd>
-                </div>
-                <div>
-                  <dt>stack</dt>
-                  <dd>{isRolling ? '...' : idea.stack.label}</dd>
-                </div>
-                <div>
-                  <dt>nivel</dt>
-                  <dd>{isRolling ? '...' : difficultyLabel(idea.difficulty)}</dd>
-                </div>
-              </dl>
-              <p className="console-cursor">
-                <span className="console-prompt">$</span> listo para construir
-                <span className="caret" aria-hidden />
-              </p>
-            </div>
+            <span className="brief-stamp" aria-hidden>
+              NO HAY EXCUSAS
+            </span>
+            <span className="brief-sticker" aria-hidden>
+              <Sparkle className="icon" />
+              RANDOM
+            </span>
 
-            <div className="console-foot">
-              <span>SEED #{idea.id}</span>
-              <span>PIXXEL UI / 8-BIT</span>
-            </div>
-
+            <piix-sprite name="mochi" size="76" className="brief-sprite" />
             <piix-pal pal="moss" scale="3" at="0.86" />
-          </div>
+          </article>
 
-          <piix-sprite name="gloop" size="92" className="hero-sprite hero-sprite-gloop" />
-          <piix-sprite name="dice" size="68" className="hero-sprite hero-sprite-dice" />
-          <piix-sprite name="star" size="46" className="hero-sprite hero-sprite-star" />
+          <piix-sprite name="dice" size="64" className="brief-dice" />
         </div>
       </div>
     </section>
