@@ -1,5 +1,4 @@
-import { GENERIC_FEATURES, PROJECT_TYPES, THEMES } from '../data/ideas'
-import type { Difficulty, Idea } from '../types'
+import type { Difficulty } from '../types'
 
 let seedCounter = 0
 
@@ -9,39 +8,6 @@ export function createSeed(): number {
   const mixed = Math.imul(seedCounter + 1, 0x9e3779b1) >>> 0
   const random = Math.floor(Math.random() * 0xffffffff) >>> 0
   return (time ^ mixed ^ random) >>> 0
-}
-
-function mulberry32(seed: number) {
-  let state = seed >>> 0
-  return () => {
-    state = (state + 0x6d2b79f5) >>> 0
-    let value = state
-    value = Math.imul(value ^ (value >>> 15), value | 1)
-    value ^= value + Math.imul(value ^ (value >>> 7), value | 61)
-    return ((value ^ (value >>> 14)) >>> 0) / 4_294_967_296
-  }
-}
-
-function pick<T>(random: () => number, items: T[]): T {
-  return items[Math.floor(random() * items.length)]
-}
-
-function pickMany<T>(random: () => number, items: T[], count: number): T[] {
-  const pool = [...items]
-  const picked: T[] = []
-  while (picked.length < count && pool.length > 0) {
-    const index = Math.floor(random() * pool.length)
-    picked.push(pool.splice(index, 1)[0])
-  }
-  return picked
-}
-
-function fill(template: string, values: Record<string, string>): string {
-  return template.replace(/\{(\w+)\}/g, (_, key: string) => values[key] ?? '')
-}
-
-function capitalize(value: string): string {
-  return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
 export function clampDifficulty(value: number): Difficulty {
@@ -56,37 +22,4 @@ export function difficultyLabel(value: Difficulty): string {
 
 export function ideaCode(seed: number): string {
   return seed.toString(36).toUpperCase().padStart(4, '0').slice(-4)
-}
-
-export function generateIdea(seed = createSeed()): Idea {
-  const random = mulberry32(seed)
-
-  const type = pick(random, PROJECT_TYPES)
-  const theme = pick(random, THEMES)
-
-  const values = {
-    theme: theme.label,
-    Theme: capitalize(theme.label),
-  }
-
-  const title = fill(pick(random, type.titles), values)
-  const pitch = fill(pick(random, type.pitches), values)
-  const features = [
-    ...pickMany(random, type.features, 3),
-    ...(random() > 0.55 ? pickMany(random, GENERIC_FEATURES, 1) : []),
-  ]
-
-  const difficulty = type.difficulty
-
-  return {
-    id: ideaCode(seed),
-    seed,
-    type,
-    theme,
-    title,
-    pitch,
-    features,
-    difficulty,
-    source: 'local',
-  }
 }

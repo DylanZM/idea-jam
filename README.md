@@ -1,13 +1,12 @@
 # IDEA JAM
 
-Generador de tópicos random para tu próxima landing, SaaS, juego o experimento web. Cada tirada cruza un formato y un nicho; la IA escribe el título, el pitch y las features, y el resultado se guarda en un historial local para volver a abrirlo cuando quieras.
+Generador de tópicos random para tu próxima landing, SaaS, juego o experimento web. La IA genera desde cero el formato, el nicho, el título, una descripción clara y lo que el proyecto tiene que tener; el resultado se guarda en un historial local para volver a abrirlo cuando quieras.
 
 ## Qué incluye
 
-- Generador con 14 formatos y 42 nichos.
-- Brief generado con Gemini a partir de la clave del proveedor, con fallback local si la IA no está disponible.
+- Ideas generadas desde cero con IA, sin catálogos ni plantillas fijas.
+- Brief con formato, nicho, título, descripción, dificultad y checklist de lo que el proyecto tiene que tener.
 - Tirada animada con atajo de teclado `G`.
-- Brief completo con título, pitch, dificultad y checklist de features.
 - Botón para copiar el brief como texto.
 - Historial de las últimas 10 ideas completas en `localStorage`.
 - Diseño neo-brutalista responsive, sin cuenta ni backend.
@@ -33,7 +32,7 @@ AI_PROVIDER_API_KEY=tu_api_key
 AI_PROVIDER_MODEL=gemini-3.1-flash-lite
 ```
 
-La app llama a Gemini directamente desde el navegador, así que la clave se incluye en el bundle del cliente. Úsala solo en local o en un despliegue privado. Si falta la clave o la petición falla, el generador usa el modo local.
+La app llama a Gemini directamente desde el navegador, así que la clave se incluye en el bundle del cliente. Úsala solo en local o en un despliegue privado. Si falta la clave o la petición falla, la app muestra un error y conserva la última idea generada.
 
 ## Desarrollo
 
@@ -60,9 +59,8 @@ npm run lint
 ```text
 src/
   components/   UI: hero, generador, ticket, historial, cómo funciona, footer
-  data/         formatos y nichos
   hooks/        historial persistente
-  lib/          IA, generación local, formato y almacenamiento
+  lib/          IA, identificadores, formato y almacenamiento
   types.ts      tipos del dominio
 public/
   dist/         core y componentes vendorizados de Piixpal + licencia MIT

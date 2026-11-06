@@ -1,6 +1,6 @@
 import type { HistoryEntry, Idea } from '../types'
 
-export const HISTORY_KEY = 'ideajam.history.v2'
+export const HISTORY_KEY = 'ideajam.history.v3'
 export const HISTORY_LIMIT = 10
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -9,24 +9,19 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function isValidIdea(value: unknown): value is Idea {
   if (!isRecord(value)) return false
-  const { id, seed, type, theme, title, pitch, features, difficulty } = value
+  const { id, seed, type, theme, title, description, features, difficulty, accent } = value
   return (
     typeof id === 'string' &&
     typeof seed === 'number' &&
     Number.isFinite(seed) &&
-    isRecord(type) &&
-    typeof type.id === 'string' &&
-    typeof type.label === 'string' &&
-    typeof type.slot === 'string' &&
-    typeof type.color === 'string' &&
-    isRecord(theme) &&
-    typeof theme.id === 'string' &&
-    typeof theme.label === 'string' &&
+    typeof type === 'string' &&
+    typeof theme === 'string' &&
     typeof title === 'string' &&
-    typeof pitch === 'string' &&
+    typeof description === 'string' &&
     Array.isArray(features) &&
     features.every((feature) => typeof feature === 'string') &&
-    typeof difficulty === 'number'
+    typeof difficulty === 'number' &&
+    typeof accent === 'string'
   )
 }
 

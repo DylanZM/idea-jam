@@ -8,7 +8,6 @@ import { Nav } from './components/Nav'
 import { Ticker } from './components/Ticker'
 import { useHistory } from './hooks/useHistory'
 import { generateAIIdea } from './lib/ai'
-import { createSeed, generateIdea } from './lib/generator'
 import type { Idea } from './types'
 
 const ROLL_DURATION = 760
@@ -18,8 +17,9 @@ function wait(ms: number): Promise<void> {
 }
 
 export default function App() {
-  const [idea, setIdea] = useState<Idea>(() => generateIdea(createSeed()))
+  const [idea, setIdea] = useState<Idea | null>(null)
   const [isRolling, setIsRolling] = useState(false)
+  const [error, setError] = useState('')
   const { entries, add, clear } = useHistory()
   const request = useRef(0)
 
@@ -27,10 +27,10 @@ export default function App() {
     if (isRolling) return
 
     const requestId = ++request.current
-    const fallback = generateIdea(createSeed())
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     setIsRolling(true)
+    setError('')
 
     const run = async () => {
       const startedAt = Date.now()
@@ -38,9 +38,12 @@ export default function App() {
 
       try {
         next = await generateAIIdea()
-      } catch (error) {
-        console.warn('No se pudo generar la idea con IA; se usa el generador local.', error)
-        next = fallback
+      } catch (generationError) {
+        console.warn('No se pudo generar la idea con IA.', generationError)
+        if (requestId !== request.current) return
+        setError('No se pudo generar la idea. Revisa la clave de la IA o vuelve a intentarlo.')
+        setIsRolling(false)
+        return
       }
 
       if (!reducedMotion) {
@@ -74,10 +77,11 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [generate])
 
-  const openFromHistory = useCallback((idea: Idea) => {
+  const openFromHistory = useCallback((next: Idea) => {
     request.current += 1
+    setError('')
     setIsRolling(false)
-    setIdea(idea)
+    setIdea(next)
     document.getElementById('generador')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [])
 
@@ -107,7 +111,7 @@ export default function App() {
           <piix-divider kind="wave" from="#1f3cff" to="#ecebe6" />
         </div>
 
-        <Generator idea={idea} isRolling={isRolling} onGenerate={generate} />
+        <Generator idea={idea} error={error} isRolling={isRolling} onGenerate={generate} />
         <History entries={entries} onOpen={openFromHistory} onClear={clear} />
         <HowItWorks />
       </main>

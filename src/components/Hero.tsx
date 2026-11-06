@@ -1,16 +1,12 @@
-import { PROJECT_TYPES, THEMES } from '../data/ideas'
 import { difficultyLabel } from '../lib/generator'
 import type { Idea } from '../types'
 import { ArrowDown, ArrowRight, Sparkle } from './Icons'
 
 type HeroProps = {
-  idea: Idea
+  idea: Idea | null
   isRolling: boolean
   onGenerate: () => void
 }
-
-const combinations = PROJECT_TYPES.length * THEMES.length
-const combinationsLabel = new Intl.NumberFormat('es').format(combinations)
 
 export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
   return (
@@ -37,8 +33,8 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
           </h1>
 
           <p className="hero-sub">
-            Un formato y un nicho al azar, con la IA escribiendo el brief. La excusa perfecta para
-            empezar tu próxima landing, SaaS o experimento antes de que se te ocurra otra cosa.
+            La IA elige un formato y un nicho, y escribe el brief completo con una descripción
+            clara y lo que el proyecto tiene que tener. La excusa perfecta para empezar hoy.
           </p>
 
           <div className="hero-actions">
@@ -53,18 +49,18 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
           </div>
 
           <p className="hero-hint">
-            <kbd>G</kbd> PARA OTRA TIRADA <span className="hint-slash">/</span>{' '}
-            <strong>{combinationsLabel}</strong> COMBINACIONES
+            <kbd>G</kbd> PARA OTRA TIRADA <span className="hint-slash">/</span> IDEAS SIN
+            PLANTILLAS
           </p>
 
           <dl className="hero-stats">
             <div>
-              <dt>Formatos</dt>
-              <dd>{PROJECT_TYPES.length}</dd>
+              <dt>Generación</dt>
+              <dd>IA</dd>
             </div>
             <div>
-              <dt>Nichos</dt>
-              <dd>{THEMES.length}</dd>
+              <dt>Plantillas</dt>
+              <dd>0</dd>
             </div>
           </dl>
         </div>
@@ -73,22 +69,22 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
           <article className={`brief${isRolling ? ' brief-busy' : ''}`}>
             <header className="brief-top">
               <span>PROJECT BRIEF</span>
-              <span>Nº {idea.id}</span>
+              <span>Nº {idea?.id ?? '—'}</span>
             </header>
 
             <div className="brief-type">
               <span className="brief-type-label">FORMATO</span>
-              <strong>{isRolling ? '— — —' : idea.type.slot}</strong>
+              <strong>{isRolling || !idea ? '— — —' : idea.type}</strong>
             </div>
 
             <dl className="brief-fields">
               <div>
-                <dt>TEMA</dt>
-                <dd>{isRolling ? '...' : idea.theme.label}</dd>
+                <dt>NICHO</dt>
+                <dd>{isRolling || !idea ? '...' : idea.theme}</dd>
               </div>
               <div>
                 <dt>NIVEL</dt>
-                <dd>{isRolling ? '...' : difficultyLabel(idea.difficulty)}</dd>
+                <dd>{isRolling || !idea ? '...' : difficultyLabel(idea.difficulty)}</dd>
               </div>
             </dl>
 
@@ -98,7 +94,9 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
                   <i key={index} />
                 ))}
               </span>
-              <span className="brief-seed">SEED {idea.seed.toString(16).toUpperCase()}</span>
+              <span className="brief-seed">
+                SEED {idea ? idea.seed.toString(16).toUpperCase() : '—'}
+              </span>
             </footer>
 
             <span className="brief-stamp" aria-hidden>
@@ -106,7 +104,7 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
             </span>
             <span className="brief-sticker" aria-hidden>
               <Sparkle className="icon" />
-              RANDOM
+              IA
             </span>
 
             <piix-sprite name="mochi" size="76" className="brief-sprite" />

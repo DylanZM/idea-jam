@@ -73,7 +73,7 @@ export function History({ entries, onOpen, onClear }: HistoryProps) {
           <div className="history-grid">
             {ideas.map(({ idea, createdAt }, index) => (
               <button
-                className={`history-card card-${idea.type.color}`}
+                className={`history-card card-${idea.accent}`}
                 type="button"
                 key={idea.seed}
                 onClick={() => onOpen(idea)}
@@ -86,9 +86,9 @@ export function History({ entries, onOpen, onClear }: HistoryProps) {
                   <span className="history-time">{timeAgo(createdAt)}</span>
                   <ArrowUpRight className="history-arrow icon" />
                 </div>
-                <span className={`tag tag-${idea.type.color}`}>{idea.type.label}</span>
+                <span className={`tag tag-${idea.accent}`}>{idea.type}</span>
                 <h3>{idea.title}</h3>
-                <p>{idea.theme.label}</p>
+                <p>{idea.theme}</p>
                 <span className="history-open">ABRIR IDEA</span>
               </button>
             ))}

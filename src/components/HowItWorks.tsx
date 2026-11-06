@@ -9,7 +9,7 @@ const steps = [
   {
     number: '02',
     title: 'Pulsa generar',
-    text: 'Un formato y un tema al azar. La IA escribe el título, el pitch y las features. Si algo no encaja, vuelve a tirar.',
+    text: 'La IA decide el formato y el nicho, y escribe el título, una descripción clara y lo que el proyecto tiene que tener. Si algo no encaja, vuelve a tirar.',
     sprite: 'bolt',
     accent: 'coral',
   },
@@ -36,8 +36,8 @@ export function HowItWorks() {
             </h2>
           </div>
           <p>
-            Un generador no te dice qué construir. Te da un formato y un nicho lo bastante
-            concretos como para empezar hoy.
+            La IA no te dice qué construir. Te da una idea concreta y un brief claro para
+            empezar hoy.
           </p>
         </div>
 
@@ -59,9 +59,9 @@ export function HowItWorks() {
             “
           </span>
           <p>
-            El formato no es el enemigo.
+            La hoja en blanco no es el enemigo.
             <br />
-            <strong>La hoja en blanco sí.</strong>
+            <strong>La IA escribe el brief.</strong>
           </p>
           <span className="quote-tag">MANIFIESTO IDEA JAM</span>
         </aside>

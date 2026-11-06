@@ -1,6 +1,5 @@
-import { PROJECT_TYPES, THEMES } from '../data/ideas'
-import type { Idea } from '../types'
-import { createSeed, ideaCode } from './generator'
+import type { Accent, Difficulty, Idea } from '../types'
+import { clampDifficulty, createSeed, ideaCode } from './generator'
 
 const API_KEY = import.meta.env.AI_PROVIDER_API_KEY?.trim() ?? ''
 const PRIMARY_MODEL = import.meta.env.AI_PROVIDER_MODEL?.trim() || 'gemini-3.1-flash-lite'
@@ -8,6 +7,8 @@ const FALLBACK_MODEL = 'gemini-3.1-flash-lite'
 const MODELS =
   PRIMARY_MODEL === FALLBACK_MODEL ? [PRIMARY_MODEL] : [PRIMARY_MODEL, FALLBACK_MODEL]
 const REQUEST_TIMEOUT = 20_000
+
+const ACCENTS: Accent[] = ['lime', 'coral', 'violet', 'sky', 'sun', 'mint']
 
 type GeminiResponse = {
   candidates?: Array<{
@@ -17,46 +18,64 @@ type GeminiResponse = {
   }>
 }
 
-type GeneratedBrief = {
+type GeneratedIdea = {
+  type: string
+  theme: string
   title: string
-  pitch: string
+  description: string
   features: string[]
+  difficulty: Difficulty
 }
 
 const RESPONSE_SCHEMA = {
   type: 'OBJECT',
   properties: {
+    type: { type: 'STRING' },
+    theme: { type: 'STRING' },
     title: { type: 'STRING' },
-    pitch: { type: 'STRING' },
+    description: { type: 'STRING' },
     features: { type: 'ARRAY', items: { type: 'STRING' } },
+    difficulty: { type: 'INTEGER' },
   },
-  required: ['title', 'pitch', 'features'],
+  required: ['type', 'theme', 'title', 'description', 'features', 'difficulty'],
 }
 
 function pickRandom<T>(items: T[]): T {
   return items[Math.floor(Math.random() * items.length)]
 }
 
-function buildPrompt(type: string, theme: string): string {
+function buildPrompt(): string {
   return [
     'Eres un generador de ideas para proyectos web.',
-    `Propón una idea concreta y original para un proyecto de tipo "${type}" sobre "${theme}".`,
+    'Crea una idea original desde cero, sin usar plantillas, catálogos ni listas predefinidas.',
     'Responde solo con JSON válido con este formato:',
-    '{"title": "string", "pitch": "string", "features": ["string"]}',
+    '{"type": "string", "theme": "string", "title": "string", "description": "string", "features": ["string"], "difficulty": 1}',
     'Reglas:',
+    '- type: formato del proyecto en 1-3 palabras (por ejemplo, "Landing page", "Micro-SaaS", "Juego web", "Dashboard").',
+    '- theme: nicho o tema concreto en 2-5 palabras.',
     '- title: máximo 9 palabras, en español, sin comillas ni emojis.',
-    '- pitch: una o dos frases concretas, sin relleno.',
-    '- features: entre 4 y 6 funcionalidades específicas y accionables, cada una en una frase corta.',
+    '- description: 2 o 3 frases claras que expliquen qué es la app, para quién es y qué problema resuelve.',
+    '- features: entre 4 y 6 cosas que el proyecto tiene que tener. Cada una debe explicar qué incluye y para qué sirve, en una frase accionable.',
+    '- difficulty: 1 si es fácil, 2 si es medio, 3 si es ambicioso.',
     '- No menciones stacks, frameworks, librerías ni restricciones de diseño.',
   ].join('\n')
 }
 
-function parseBrief(raw: string): GeneratedBrief {
+function parseIdea(raw: string): GeneratedIdea {
   const parsed: unknown = JSON.parse(raw)
   if (!parsed || typeof parsed !== 'object') throw new Error('invalid-ai-response')
 
-  const { title, pitch, features } = parsed as Record<string, unknown>
-  if (typeof title !== 'string' || typeof pitch !== 'string' || !Array.isArray(features)) {
+  const { type, theme, title, description, features, difficulty } = parsed as Record<
+    string,
+    unknown
+  >
+  if (
+    typeof type !== 'string' ||
+    typeof theme !== 'string' ||
+    typeof title !== 'string' ||
+    typeof description !== 'string' ||
+    !Array.isArray(features)
+  ) {
     throw new Error('invalid-ai-response')
   }
 
@@ -66,18 +85,30 @@ function parseBrief(raw: string): GeneratedBrief {
     .filter(Boolean)
     .slice(0, 6)
 
-  if (!title.trim() || !pitch.trim() || cleanFeatures.length < 3) {
+  if (
+    !type.trim() ||
+    !theme.trim() ||
+    !title.trim() ||
+    !description.trim() ||
+    cleanFeatures.length < 3
+  ) {
     throw new Error('invalid-ai-response')
   }
 
-  return { title: title.trim(), pitch: pitch.trim(), features: cleanFeatures }
+  return {
+    type: type.trim(),
+    theme: theme.trim(),
+    title: title.trim(),
+    description: description.trim(),
+    features: cleanFeatures,
+    difficulty:
+      typeof difficulty === 'number' && Number.isFinite(difficulty)
+        ? clampDifficulty(difficulty)
+        : 2,
+  }
 }
 
-async function requestBrief(
-  model: string,
-  typeLabel: string,
-  themeLabel: string,
-): Promise<GeneratedBrief> {
+async function requestIdea(model: string): Promise<GeneratedIdea> {
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT)
 
@@ -89,11 +120,9 @@ async function requestBrief(
         headers: { 'Content-Type': 'application/json' },
         signal: controller.signal,
         body: JSON.stringify({
-          contents: [
-            { role: 'user', parts: [{ text: buildPrompt(typeLabel, themeLabel) }] },
-          ],
+          contents: [{ role: 'user', parts: [{ text: buildPrompt() }] }],
           generationConfig: {
-            temperature: 1.1,
+            temperature: 1.2,
             responseMimeType: 'application/json',
             responseSchema: RESPONSE_SCHEMA,
           },
@@ -107,7 +136,7 @@ async function requestBrief(
     const text =
       data.candidates?.[0]?.content?.parts?.map((part) => part.text ?? '').join('') ?? ''
 
-    return parseBrief(text)
+    return parseIdea(text)
   } finally {
     window.clearTimeout(timeout)
   }
@@ -116,26 +145,23 @@ async function requestBrief(
 export async function generateAIIdea(): Promise<Idea> {
   if (!API_KEY) throw new Error('missing-ai-api-key')
 
-  const type = pickRandom(PROJECT_TYPES)
-  const theme = pickRandom(THEMES)
-
   let lastError: unknown
 
   for (const model of MODELS) {
     try {
-      const brief = await requestBrief(model, type.label, theme.label)
+      const generated = await requestIdea(model)
       const seed = createSeed()
 
       return {
         id: ideaCode(seed),
         seed,
-        type,
-        theme,
-        title: brief.title,
-        pitch: brief.pitch,
-        features: brief.features,
-        difficulty: type.difficulty,
-        source: 'ai',
+        type: generated.type,
+        theme: generated.theme,
+        title: generated.title,
+        description: generated.description,
+        features: generated.features,
+        difficulty: generated.difficulty,
+        accent: pickRandom(ACCENTS),
       }
     } catch (error) {
       lastError = error

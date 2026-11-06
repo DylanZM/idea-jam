@@ -1,24 +1,12 @@
-import { useEffect, useState } from 'react'
-import { PROJECT_TYPES, THEMES } from '../data/ideas'
 import type { Idea } from '../types'
 import { IdeaTicket } from './IdeaTicket'
 import { Sparkle, Terminal } from './Icons'
 
 type GeneratorProps = {
-  idea: Idea
+  idea: Idea | null
+  error: string
   isRolling: boolean
   onGenerate: () => void
-}
-
-type Reel = {
-  type: string
-  theme: string
-}
-
-function randomReel(): Reel {
-  const type = PROJECT_TYPES[Math.floor(Math.random() * PROJECT_TYPES.length)]
-  const theme = THEMES[Math.floor(Math.random() * THEMES.length)]
-  return { type: type.slot, theme: theme.label }
 }
 
 function Slot({
@@ -48,18 +36,7 @@ function Slot({
   )
 }
 
-export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
-  const [reel, setReel] = useState<Reel>(() => ({
-    type: idea.type.slot,
-    theme: idea.theme.label,
-  }))
-
-  useEffect(() => {
-    if (!isRolling) return
-    const interval = window.setInterval(() => setReel(randomReel()), 80)
-    return () => window.clearInterval(interval)
-  }, [isRolling])
-
+export function Generator({ idea, error, isRolling, onGenerate }: GeneratorProps) {
   return (
     <section className="section generator-section" id="generador">
       <div className="container">
@@ -76,12 +53,12 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
           </div>
           <div className="generator-intro">
             <p>
-              La IA cruza un formato y un nicho. El resultado no es una idea perfecta: es una idea
-              que puedes empezar hoy.
+              La IA decide el formato, el nicho y escribe el brief completo. El resultado no es
+              una idea perfecta: es una idea que puedes empezar hoy.
             </p>
             <span className="generator-tag">
               <Sparkle className="icon" />
-              SIN CUENTA / SIN EXCUSAS
+              SIN PLANTILLAS / SIN EXCUSAS
             </span>
           </div>
         </div>
@@ -94,7 +71,7 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
             </span>
             <span className={`status-pill${isRolling ? ' is-busy' : ''}`}>
               <span className="status-dot" aria-hidden />
-              {isRolling ? 'GENERANDO' : idea.source === 'ai' ? 'IA' : 'LOCAL'}
+              {isRolling ? 'GENERANDO' : idea ? 'IA' : 'ESPERANDO'}
             </span>
           </div>
 
@@ -102,14 +79,14 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
             <Slot
               index="01"
               label="FORMATO"
-              value={isRolling ? reel.type : idea.type.slot}
+              value={isRolling ? 'GENERANDO…' : idea?.type ?? '— — —'}
               accent="lime"
               rolling={isRolling}
             />
             <Slot
               index="02"
               label="NICHO"
-              value={isRolling ? reel.theme : idea.theme.label}
+              value={isRolling ? 'GENERANDO…' : idea?.theme ?? '— — —'}
               accent="coral"
               rolling={isRolling}
             />
@@ -123,18 +100,24 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
               disabled={isRolling}
             >
               <Sparkle className={`icon${isRolling ? ' spin' : ''}`} />
-              <span>{isRolling ? 'MEZCLANDO…' : 'GENERAR IDEA'}</span>
+              <span>{isRolling ? 'GENERANDO…' : 'GENERAR IDEA'}</span>
               <span className="btn-key">{isRolling ? '···' : 'G'}</span>
             </button>
-            <p className="machine-note">
-              Un clic. Una idea. Si no te convence, vuelve a tirar.
-            </p>
+            {error ? (
+              <p className="machine-error" role="alert">
+                {error}
+              </p>
+            ) : (
+              <p className="machine-note">
+                Un clic. Una idea. Si no te convence, vuelve a tirar.
+              </p>
+            )}
           </div>
 
           <piix-pal pal="pip" on=".js-generate" scale="3" />
         </div>
 
-        <IdeaTicket idea={idea} isRolling={isRolling} key={idea.seed} />
+        <IdeaTicket idea={idea} isRolling={isRolling} key={idea?.seed ?? 'empty'} />
       </div>
     </section>
   )

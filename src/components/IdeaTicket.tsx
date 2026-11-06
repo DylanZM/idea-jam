@@ -4,7 +4,7 @@ import type { Idea } from '../types'
 import { Check, Copy } from './Icons'
 
 type IdeaTicketProps = {
-  idea: Idea
+  idea: Idea | null
   isRolling: boolean
 }
 
@@ -16,13 +16,13 @@ function buildBrief(idea: Idea): string {
     '',
     idea.title,
     '',
-    idea.pitch,
+    idea.description,
     '',
-    `TIPO: ${idea.type.label}`,
-    `TEMA: ${idea.theme.label}`,
+    `FORMATO: ${idea.type}`,
+    `NICHO: ${idea.theme}`,
     `DIFICULTAD: ${difficultyLabel(idea.difficulty)}`,
     '',
-    'QUÉ TIENE QUE TENER',
+    'LO QUE TIENE QUE TENER',
     ...idea.features.map((feature) => `- ${feature}`),
   ].join('\n')
 }
@@ -36,6 +36,31 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
       if (timeout.current) window.clearTimeout(timeout.current)
     }
   }, [])
+
+  if (!idea) {
+    return (
+      <article className="ticket ticket-empty" id="idea-result">
+        <div className="ticket-perf" aria-hidden />
+        <header className="ticket-head">
+          <span className="ticket-code">IDEA —</span>
+          <span className="ticket-stamp" aria-hidden>
+            BRIEF
+          </span>
+        </header>
+        <div className="ticket-main">
+          <div className="ticket-title-wrap">
+            <span className="ticket-kicker">PROPUESTA / IA</span>
+            <h3>Tu próxima idea empieza aquí</h3>
+            <p className="ticket-pitch">
+              Pulsa generar y la IA escribirá el formato, el nicho, una descripción clara y lo
+              que el proyecto tiene que tener.
+            </p>
+          </div>
+        </div>
+        <piix-pal pal="kitty" scale="3" at="0.92" />
+      </article>
+    )
+  }
 
   const handleCopy = async () => {
     try {
@@ -59,7 +84,7 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
 
       <header className="ticket-head">
         <span className="ticket-code">IDEA #{idea.id}</span>
-        <span className={`tag tag-${idea.type.color}`}>{idea.type.label}</span>
+        <span className={`tag tag-${idea.accent}`}>{idea.type}</span>
         <span className="ticket-stamp" aria-hidden>
           BRIEF
         </span>
@@ -67,9 +92,9 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
 
       <div className="ticket-main">
         <div className="ticket-title-wrap">
-          <span className="ticket-kicker">PROPUESTA / {idea.theme.id.toUpperCase()}</span>
+          <span className="ticket-kicker">PROPUESTA / {idea.theme.toUpperCase()}</span>
           <h3>{idea.title}</h3>
-          <p className="ticket-pitch">{idea.pitch}</p>
+          <p className="ticket-pitch">{idea.description}</p>
         </div>
 
         <div className="ticket-flap" aria-hidden>
@@ -80,8 +105,8 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
 
       <dl className="ticket-meta">
         <div>
-          <dt>Tema</dt>
-          <dd>{idea.theme.label}</dd>
+          <dt>Nicho</dt>
+          <dd>{idea.theme}</dd>
         </div>
         <div>
           <dt>Nivel</dt>
@@ -90,7 +115,7 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
       </dl>
 
       <div className="ticket-features">
-        <h4>Qué tiene que tener</h4>
+        <h4>Lo que tiene que tener</h4>
         <ul>
           {idea.features.map((feature) => (
             <li key={feature}>
