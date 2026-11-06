@@ -94,7 +94,7 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
             </span>
             <span className={`status-pill${isRolling ? ' is-busy' : ''}`}>
               <span className="status-dot" aria-hidden />
-              {isRolling ? 'GIRANDO' : 'READY'}
+              {isRolling ? 'GENERANDO' : idea.source === 'ai' ? 'IA' : 'LOCAL'}
             </span>
           </div>
 

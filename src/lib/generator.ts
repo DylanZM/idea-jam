@@ -87,5 +87,6 @@ export function generateIdea(seed = createSeed()): Idea {
     pitch,
     features,
     difficulty,
+    source: 'local',
   }
 }

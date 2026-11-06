@@ -7,44 +7,55 @@ import { HowItWorks } from './components/HowItWorks'
 import { Nav } from './components/Nav'
 import { Ticker } from './components/Ticker'
 import { useHistory } from './hooks/useHistory'
+import { generateAIIdea } from './lib/ai'
 import { createSeed, generateIdea } from './lib/generator'
 import type { Idea } from './types'
 
 const ROLL_DURATION = 760
 
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => window.setTimeout(resolve, ms))
+}
+
 export default function App() {
   const [idea, setIdea] = useState<Idea>(() => generateIdea(createSeed()))
   const [isRolling, setIsRolling] = useState(false)
   const { entries, add, clear } = useHistory()
-  const timeout = useRef<number | null>(null)
-
-  useEffect(() => {
-    return () => {
-      if (timeout.current) window.clearTimeout(timeout.current)
-    }
-  }, [])
+  const request = useRef(0)
 
   const generate = useCallback(() => {
     if (isRolling) return
 
-    const seed = createSeed()
-    const next = generateIdea(seed)
+    const requestId = ++request.current
+    const fallback = generateIdea(createSeed())
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    const finish = () => {
+    setIsRolling(true)
+
+    const run = async () => {
+      const startedAt = Date.now()
+      let next: Idea
+
+      try {
+        next = await generateAIIdea()
+      } catch (error) {
+        console.warn('No se pudo generar la idea con IA; se usa el generador local.', error)
+        next = fallback
+      }
+
+      if (!reducedMotion) {
+        const remaining = ROLL_DURATION - (Date.now() - startedAt)
+        if (remaining > 0) await wait(remaining)
+      }
+
+      if (requestId !== request.current) return
+
       setIdea(next)
       add(next)
       setIsRolling(false)
-      timeout.current = null
     }
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reducedMotion) {
-      finish()
-      return
-    }
-
-    setIsRolling(true)
-    timeout.current = window.setTimeout(finish, ROLL_DURATION)
+    void run()
   }, [add, isRolling])
 
   useEffect(() => {
@@ -64,10 +75,7 @@ export default function App() {
   }, [generate])
 
   const openFromHistory = useCallback((idea: Idea) => {
-    if (timeout.current) {
-      window.clearTimeout(timeout.current)
-      timeout.current = null
-    }
+    request.current += 1
     setIsRolling(false)
     setIdea(idea)
     document.getElementById('generador')?.scrollIntoView({ behavior: 'smooth', block: 'start' })

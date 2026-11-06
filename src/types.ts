@@ -26,6 +26,7 @@ export interface Idea {
   pitch: string
   features: string[]
   difficulty: Difficulty
+  source: 'ai' | 'local'
 }
 
 export interface HistoryEntry {
