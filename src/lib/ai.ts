@@ -10,20 +10,7 @@ const REQUEST_TIMEOUT = 20_000
 
 const ACCENTS: Accent[] = ['lime', 'coral', 'violet', 'sky', 'sun', 'mint']
 
-const DIRECTIONS_ES = [
-  'Combina dos industrias que casi nunca se cruzan.',
-  'Imagina una herramienta para un oficio muy concreto.',
-  'Convierte una tarea aburrida en algo adictivo.',
-  'Diseña algo para un grupo pequeño pero apasionado.',
-  'Resuelve un problema de una comunidad local.',
-  'Parte de una restricción absurda y construye alrededor.',
-  'Mezcla una experiencia física con una pantalla.',
-  'Piensa en algo que usarías cada mañana.',
-  'Haz visible algo que la gente suele ignorar.',
-  'Convierte un hobby de nicho en una herramienta seria.',
-]
-
-const DIRECTIONS_EN = [
+const DIRECTIONS = [
   'Combine two industries that almost never meet.',
   'Imagine a tool for a very specific craft.',
   'Turn a boring task into something addictive.',
@@ -78,6 +65,8 @@ type GeneratedIdea = {
   difficulty: Difficulty
 }
 
+type IdeaTranslation = Omit<GeneratedIdea, 'difficulty'>
+
 const RESPONSE_SCHEMA = {
   type: 'OBJECT',
   properties: {
@@ -89,6 +78,18 @@ const RESPONSE_SCHEMA = {
     difficulty: { type: 'INTEGER' },
   },
   required: ['type', 'theme', 'title', 'description', 'features', 'difficulty'],
+}
+
+const TRANSLATION_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    type: { type: 'STRING' },
+    theme: { type: 'STRING' },
+    title: { type: 'STRING' },
+    description: { type: 'STRING' },
+    features: { type: 'ARRAY', items: { type: 'STRING' } },
+  },
+  required: ['type', 'theme', 'title', 'description', 'features'],
 }
 
 const STOP_WORDS = new Set([
@@ -163,68 +164,37 @@ function tooSimilar(candidate: GeneratedIdea, avoid: AvoidIdea[]): boolean {
 
 function buildPrompt(options: GenerateOptions): string {
   const { language, avoid = [] } = options
-  const inEnglish = language === 'en'
-  const directions = inEnglish ? DIRECTIONS_EN : DIRECTIONS_ES
-  const directionA = pickRandom(directions)
-  const directionB = pickRandom(directions)
-
-  const languageRule = inEnglish
-    ? 'Write every field in natural English. Do not use Spanish.'
-    : 'Escribe todos los campos en español natural. No uses inglés.'
+  const languageName = language === 'en' ? 'English' : 'Spanish'
+  const directionA = pickRandom(DIRECTIONS)
+  const directionB = pickRandom(DIRECTIONS)
 
   const avoidBlock =
     avoid.length > 0
       ? [
-          inEnglish
-            ? 'These ideas were already generated. Do not repeat or imitate them:'
-            : 'Estas ideas ya se generaron. No las repitas ni te parezcas a ellas:',
+          'These ideas were already generated. Do not repeat or imitate them:',
           ...avoid
             .slice(0, 10)
             .map((idea) => `- ${idea.type}: ${idea.title} — ${idea.theme}`),
-          inEnglish
-            ? 'Pick a clearly different format and a clearly different niche.'
-            : 'Elige un formato claramente distinto y un nicho claramente distinto.',
+          'Pick a clearly different format and a clearly different niche.',
         ].join('\n')
       : ''
 
   return [
-    inEnglish
-      ? 'You are a generator of original ideas for web projects.'
-      : 'Eres un generador de ideas originales para proyectos web.',
-    inEnglish
-      ? 'Create something new from scratch, without templates, catalogs or predefined lists.'
-      : 'Crea algo nuevo desde cero, sin plantillas, catálogos ni listas predefinidas.',
-    inEnglish
-      ? 'Respond only with valid JSON in this shape:'
-      : 'Responde solo con JSON válido con este formato:',
+    'You are a generator of original ideas for web projects.',
+    'Create something new from scratch, without templates, catalogs or predefined lists.',
+    `Write every field in natural ${languageName}. Do not use any other language.`,
+    'Respond only with valid JSON in this shape:',
     '{"type": "string", "theme": "string", "title": "string", "description": "string", "features": ["string"], "difficulty": 1}',
-    inEnglish ? 'Rules:' : 'Reglas:',
-    languageRule,
-    inEnglish
-      ? '- type: project format in 1-3 words (for example, "Landing page", "Micro-SaaS", "Web game", "Dashboard").'
-      : '- type: formato del proyecto en 1-3 palabras (por ejemplo, "Landing page", "Micro-SaaS", "Juego web", "Dashboard").',
-    inEnglish
-      ? '- theme: a specific niche or topic in 2-5 words.'
-      : '- theme: nicho o tema concreto en 2-5 palabras.',
-    inEnglish
-      ? '- title: maximum 9 words, no quotes or emojis, and the most specific and surprising part first.'
-      : '- title: máximo 9 palabras, sin comillas ni emojis, y lo más específico y sorprendente primero.',
-    inEnglish
-      ? '- description: 2 or 3 clear sentences explaining what the app is, who it is for and what problem it solves.'
-      : '- description: 2 o 3 frases claras que expliquen qué es la app, para quién es y qué problema resuelve.',
-    inEnglish
-      ? '- features: between 4 and 6 things the project must have. Each one explains what it includes and why it matters in one actionable sentence.'
-      : '- features: entre 4 y 6 cosas que el proyecto tiene que tener. Cada una debe explicar qué incluye y para qué sirve, en una frase accionable.',
-    inEnglish
-      ? '- difficulty: 1 if easy, 2 if medium, 3 if ambitious.'
-      : '- difficulty: 1 si es fácil, 2 si es medio, 3 si es ambicioso.',
-    inEnglish
-      ? '- Do not mention stacks, frameworks, libraries or visual constraints.'
-      : '- No menciones stacks, frameworks, librerías ni restricciones de diseño.',
-    inEnglish
-      ? '- Be concrete and unusual. Avoid generic ideas about productivity, fitness or social networks.'
-      : '- Sé concreto e inusual. Evita ideas genéricas de productividad, fitness o redes sociales.',
-    inEnglish ? 'Creative directions to explore:' : 'Direcciones creativas para explorar:',
+    'Rules:',
+    '- type: project format in 1-3 words (for example, "Landing page", "Micro-SaaS", "Web game", "Dashboard").',
+    '- theme: a specific niche or topic in 2-5 words.',
+    '- title: maximum 9 words, no quotes or emojis, and the most specific and surprising part first.',
+    '- description: 2 or 3 clear sentences explaining what the app is, who it is for and what problem it solves.',
+    '- features: between 4 and 6 things the project must have. Each one explains what it includes and why it matters in one actionable sentence.',
+    '- difficulty: 1 if easy, 2 if medium, 3 if ambitious.',
+    '- Do not mention stacks, frameworks, libraries or visual constraints.',
+    '- Be concrete and unusual. Avoid generic ideas about productivity, fitness or social networks.',
+    'Creative directions to explore:',
     `- ${directionA}`,
     `- ${directionB}`,
     avoidBlock,
@@ -277,6 +247,101 @@ function parseIdea(raw: string): GeneratedIdea {
       typeof difficulty === 'number' && Number.isFinite(difficulty)
         ? clampDifficulty(difficulty)
         : 2,
+  }
+}
+
+function parseTranslation(raw: string): IdeaTranslation {
+  const parsed: unknown = JSON.parse(raw)
+  if (!parsed || typeof parsed !== 'object') throw new Error('invalid-ai-response')
+
+  const { type, theme, title, description, features } = parsed as Record<string, unknown>
+  if (
+    typeof type !== 'string' ||
+    typeof theme !== 'string' ||
+    typeof title !== 'string' ||
+    typeof description !== 'string' ||
+    !Array.isArray(features)
+  ) {
+    throw new Error('invalid-ai-response')
+  }
+
+  const cleanFeatures = features
+    .filter((feature): feature is string => typeof feature === 'string')
+    .map((feature) => feature.trim())
+    .filter(Boolean)
+
+  if (!type.trim() || !theme.trim() || !title.trim() || !description.trim()) {
+    throw new Error('invalid-ai-response')
+  }
+  if (cleanFeatures.length === 0) throw new Error('invalid-ai-response')
+
+  return {
+    type: type.trim(),
+    theme: theme.trim(),
+    title: title.trim(),
+    description: description.trim(),
+    features: cleanFeatures,
+  }
+}
+
+function buildTranslationPrompt(idea: Idea, language: Language): string {
+  const languageName = language === 'en' ? 'English' : 'Spanish'
+  const original = {
+    type: idea.type,
+    theme: idea.theme,
+    title: idea.title,
+    description: idea.description,
+    features: idea.features,
+  }
+
+  return [
+    `Translate the following project brief into natural ${languageName}.`,
+    'Keep the same meaning, tone and level of detail. Do not invent, remove or reorder anything.',
+    'Translate "type", "theme", "title", "description" and every item in "features".',
+    'Respond only with valid JSON in this shape:',
+    '{"type": "string", "theme": "string", "title": "string", "description": "string", "features": ["string"]}',
+    'Original brief:',
+    JSON.stringify(original, null, 2),
+  ].join('\n')
+}
+
+async function requestTranslation(
+  model: string,
+  idea: Idea,
+  language: Language,
+): Promise<IdeaTranslation> {
+  const controller = new AbortController()
+  const timeout = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT)
+
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(API_KEY)}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: buildTranslationPrompt(idea, language) }] }],
+          generationConfig: {
+            temperature: 0.2,
+            responseMimeType: 'application/json',
+            responseSchema: TRANSLATION_SCHEMA,
+          },
+        }),
+      },
+    )
+
+    if (response.status === 429) throw new RateLimitError()
+    if (response.status === 401 || response.status === 403) throw new MissingKeyError()
+    if (!response.ok) throw new Error(`ai-request-failed:${response.status}`)
+
+    const data = (await response.json()) as GeminiResponse
+    const text =
+      data.candidates?.[0]?.content?.parts?.map((part) => part.text ?? '').join('') ?? ''
+
+    return parseTranslation(text)
+  } finally {
+    window.clearTimeout(timeout)
   }
 }
 
@@ -350,7 +415,27 @@ export async function generateAIIdea(options: GenerateOptions): Promise<Idea> {
         features: generated.features,
         difficulty: generated.difficulty,
         accent: pickRandom(ACCENTS),
+        language: options.language,
       }
+    } catch (error) {
+      if (error instanceof RateLimitError || error instanceof MissingKeyError) throw error
+      lastError = error
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error('ai-unavailable')
+}
+
+export async function translateIdea(idea: Idea, language: Language): Promise<Idea> {
+  if (idea.language === language) return idea
+  if (!API_KEY) throw new MissingKeyError()
+
+  let lastError: unknown
+
+  for (const model of MODELS) {
+    try {
+      const translated = await requestTranslation(model, idea, language)
+      return { ...idea, ...translated, language }
     } catch (error) {
       if (error instanceof RateLimitError || error instanceof MissingKeyError) throw error
       lastError = error

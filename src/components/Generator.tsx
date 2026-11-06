@@ -8,6 +8,7 @@ type GeneratorProps = {
   idea: Idea | null
   error: GeneratorError | ''
   isRolling: boolean
+  isTranslating: boolean
   onGenerate: () => void
   cooldownSeconds: number
   minuteLimit: number
@@ -45,6 +46,7 @@ export function Generator({
   idea,
   error,
   isRolling,
+  isTranslating,
   onGenerate,
   cooldownSeconds,
   minuteLimit,
@@ -106,9 +108,11 @@ export function Generator({
               <span className="status-dot" aria-hidden />
               {isRolling
                 ? messages.generator.statusBusy
-                : idea
-                  ? messages.generator.statusReady
-                  : messages.generator.statusIdle}
+                : isTranslating
+                  ? messages.generator.statusTranslating
+                  : idea
+                    ? messages.generator.statusReady
+                    : messages.generator.statusIdle}
             </span>
           </div>
 
@@ -170,7 +174,12 @@ export function Generator({
           <piix-pal pal="pip" on=".js-generate" scale="3" />
         </div>
 
-        <IdeaTicket idea={idea} isRolling={isRolling} key={idea?.seed ?? 'empty'} />
+        <IdeaTicket
+          idea={idea}
+          isRolling={isRolling}
+          isTranslating={isTranslating}
+          key={idea?.seed ?? 'empty'}
+        />
       </div>
     </section>
   )

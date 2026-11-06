@@ -5,12 +5,14 @@ import { ArrowDown, ArrowRight, Sparkle } from './Icons'
 type HeroProps = {
   idea: Idea | null
   isRolling: boolean
+  isTranslating: boolean
   onGenerate: () => void
 }
 
-export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
+export function Hero({ idea, isRolling, isTranslating, onGenerate }: HeroProps) {
   const { messages } = useI18n()
-  const stateClass = isRolling ? ' brief-busy' : idea ? '' : ' brief-idle'
+  const isBusy = isRolling || isTranslating
+  const stateClass = isBusy ? ' brief-busy' : idea ? '' : ' brief-idle'
 
   return (
     <section className="hero" id="top">
@@ -80,9 +82,11 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
               <strong>
                 {isRolling
                   ? messages.hero.briefThinkingType
-                  : idea
-                    ? idea.type
-                    : messages.hero.briefIdleType}
+                  : isTranslating
+                    ? messages.hero.briefTranslatingType
+                    : idea
+                      ? idea.type
+                      : messages.hero.briefIdleType}
               </strong>
             </div>
 
@@ -98,11 +102,14 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
             </dl>
 
             <div className="brief-body">
-              {isRolling ? (
-                <div className="brief-skeleton" aria-hidden>
+              {isBusy ? (
+                <div className="brief-skeleton" aria-hidden={!isTranslating}>
                   <span className="skeleton-line" />
                   <span className="skeleton-line" />
                   <span className="skeleton-line skeleton-line-short" />
+                  {isTranslating ? (
+                    <span className="brief-translating">{messages.ticket.translating}</span>
+                  ) : null}
                 </div>
               ) : idea ? (
                 <>

@@ -9,8 +9,8 @@ import { Ticker } from './components/Ticker'
 import { useHistory } from './hooks/useHistory'
 import { useRateLimit } from './hooks/useRateLimit'
 import { useI18n } from './i18n'
-import { generateAIIdea, MissingKeyError, RateLimitError } from './lib/ai'
-import type { GeneratorError, Idea } from './types'
+import { generateAIIdea, MissingKeyError, RateLimitError, translateIdea } from './lib/ai'
+import type { GeneratorError, Idea, Language } from './types'
 
 const ROLL_DURATION = 760
 
@@ -22,10 +22,48 @@ export default function App() {
   const { language, messages } = useI18n()
   const [idea, setIdea] = useState<Idea | null>(null)
   const [isRolling, setIsRolling] = useState(false)
+  const [isTranslating, setIsTranslating] = useState(false)
   const [error, setError] = useState<GeneratorError | ''>('')
-  const { entries, add, clear } = useHistory()
+  const { entries, add, update, clear } = useHistory()
   const { snapshot, check, consume, refund } = useRateLimit()
   const request = useRef(0)
+  const languageRef = useRef(language)
+  const activeTranslations = useRef(new Set<string>())
+
+  useEffect(() => {
+    languageRef.current = language
+  }, [language])
+
+  const translateCurrent = useCallback(
+    async (source: Idea, target: Language) => {
+      if (source.language === target) return
+
+      const key = `${source.seed}:${target}`
+      if (activeTranslations.current.has(key)) return
+
+      activeTranslations.current.add(key)
+      setIsTranslating(true)
+
+      try {
+        const translated = await translateIdea(source, target)
+        if (languageRef.current !== target) return
+        setIdea((current) => (current?.seed === source.seed ? translated : current))
+        update(translated)
+      } catch (translationError) {
+        console.warn('Could not translate the idea.', translationError)
+      } finally {
+        activeTranslations.current.delete(key)
+        if (activeTranslations.current.size === 0) setIsTranslating(false)
+      }
+    },
+    [update],
+  )
+
+  useEffect(() => {
+    if (!idea || idea.language === language) return
+    const timer = window.setTimeout(() => void translateCurrent(idea, language), 0)
+    return () => window.clearTimeout(timer)
+  }, [idea, language, translateCurrent])
 
   const generate = useCallback(() => {
     if (isRolling) return
@@ -55,7 +93,7 @@ export default function App() {
       try {
         next = await generateAIIdea({ language, avoid })
       } catch (generationError) {
-        console.warn('No se pudo generar la idea con IA.', generationError)
+        console.warn('Could not generate the idea with AI.', generationError)
         if (requestId !== request.current) return
         if (!(generationError instanceof RateLimitError)) refund(reserved)
         setError(
@@ -125,22 +163,28 @@ export default function App() {
       <Nav />
 
       <main>
-        <Hero idea={idea} isRolling={isRolling} onGenerate={generate} />
+        <Hero
+          idea={idea}
+          isRolling={isRolling}
+          isTranslating={isTranslating}
+          onGenerate={generate}
+        />
 
         <div className="divider-band divider-to-blue" aria-hidden>
-          <piix-divider kind="wave" from="#ecebe6" to="#1f3cff" />
+          <piix-divider kind="wave" from="#f4efe6" to="#2b3cff" />
         </div>
 
         <Ticker />
 
         <div className="divider-band divider-from-blue" aria-hidden>
-          <piix-divider kind="wave" from="#1f3cff" to="#ecebe6" />
+          <piix-divider kind="wave" from="#2b3cff" to="#f4efe6" />
         </div>
 
         <Generator
           idea={idea}
           error={visibleError}
           isRolling={isRolling}
+          isTranslating={isTranslating}
           onGenerate={generate}
           cooldownSeconds={snapshot.cooldownSeconds}
           minuteLimit={snapshot.minuteLimit}

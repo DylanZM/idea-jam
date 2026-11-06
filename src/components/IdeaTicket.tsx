@@ -7,6 +7,7 @@ import { Check, Copy } from './Icons'
 type IdeaTicketProps = {
   idea: Idea | null
   isRolling: boolean
+  isTranslating: boolean
 }
 
 type CopyState = 'idle' | 'copied' | 'error'
@@ -28,7 +29,7 @@ function buildBrief(idea: Idea, messages: Messages): string {
   ].join('\n')
 }
 
-export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
+export function IdeaTicket({ idea, isRolling, isTranslating }: IdeaTicketProps) {
   const { messages } = useI18n()
   const [copyState, setCopyState] = useState<CopyState>('idle')
   const timeout = useRef<number | null>(null)
@@ -103,10 +104,11 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
 
   return (
     <article
-      className={`ticket${isRolling ? ' ticket-busy' : ''}`}
+      className={`ticket${isRolling ? ' ticket-busy' : ''}${isTranslating ? ' ticket-translating' : ''}`}
       id="idea-result"
       aria-live="polite"
       aria-atomic="true"
+      aria-busy={isRolling || isTranslating}
     >
       <div className="ticket-perf" aria-hidden />
 
@@ -134,6 +136,13 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
           <span className="ticket-flap-label">SPLIT-FLAP / IDEA ID</span>
         </div>
       </div>
+
+      {isTranslating ? (
+        <p className="ticket-translate-note" role="status">
+          <span className="thinking-dot" aria-hidden />
+          {messages.ticket.translating}
+        </p>
+      ) : null}
 
       <dl className="ticket-meta">
         <div>

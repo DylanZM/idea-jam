@@ -1,5 +1,5 @@
 import { useI18n } from '../i18n'
-import { ArrowDown, Sparkle } from './Icons'
+import { ArrowDown, Lightbulb } from './Icons'
 import { LanguageSwitcher } from './LanguageSwitcher'
 
 export function Nav() {
@@ -10,7 +10,7 @@ export function Nav() {
       <div className="nav-inner container">
         <a className="logo" href="#top" aria-label={messages.nav.homeAria}>
           <span className="logo-mark" aria-hidden>
-            <Sparkle className="logo-spark" />
+            <Lightbulb className="logo-spark" size={20} />
           </span>
           <span>
             IDEA<span className="logo-slash">/</span>JAM

@@ -1,5 +1,5 @@
 import { useI18n } from '../i18n'
-import { ArrowUpRight, Github, Sparkle } from './Icons'
+import { ArrowUpRight, Github, Lightbulb } from './Icons'
 
 type FooterProps = {
   onGenerate: () => void
@@ -42,7 +42,7 @@ export function Footer({ onGenerate }: FooterProps) {
         <div className="container footer-bar-inner">
           <a className="logo logo-invert" href="#top" aria-label={messages.nav.homeAria}>
             <span className="logo-mark" aria-hidden>
-              <Sparkle className="logo-spark" />
+              <Lightbulb className="logo-spark" size={20} />
             </span>
             <span>
               IDEA<span className="logo-slash">/</span>JAM

@@ -9,7 +9,9 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function isValidIdea(value: unknown): value is Idea {
   if (!isRecord(value)) return false
-  const { id, seed, type, theme, title, description, features, difficulty, accent } = value
+  const { id, seed, type, theme, title, description, features, difficulty, accent, language } =
+    value
+  if (language !== undefined && language !== 'es' && language !== 'en') return false
   return (
     typeof id === 'string' &&
     typeof seed === 'number' &&
@@ -68,6 +70,14 @@ export function addHistoryEntry(entries: HistoryEntry[], idea: Idea): HistoryEnt
     { idea, createdAt: Date.now() },
     ...entries.filter((entry) => entry.idea.seed !== idea.seed),
   ].slice(0, HISTORY_LIMIT)
+  saveHistory(next)
+  return next
+}
+
+export function updateHistoryEntry(entries: HistoryEntry[], idea: Idea): HistoryEntry[] {
+  const next = entries.map((entry) =>
+    entry.idea.seed === idea.seed ? { ...entry, idea } : entry,
+  )
   saveHistory(next)
   return next
 }

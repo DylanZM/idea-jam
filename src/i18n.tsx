@@ -36,6 +36,7 @@ export type Messages = {
     briefNiche: string
     briefLevel: string
     briefThinkingType: string
+    briefTranslatingType: string
     briefIdleType: string
     briefIdleTitle: string
     briefIdleText: string
@@ -56,6 +57,7 @@ export type Messages = {
     tag: string
     machineName: string
     statusBusy: string
+    statusTranslating: string
     statusReady: string
     statusIdle: string
     format: string
@@ -92,6 +94,7 @@ export type Messages = {
     loadingKicker: string
     loadingTitle: string
     loadingText: string
+    translating: string
   }
   history: {
     eyebrow: string
@@ -171,6 +174,7 @@ const es: Messages = {
     briefNiche: 'NICHO',
     briefLevel: 'NIVEL',
     briefThinkingType: 'PENSANDO…',
+    briefTranslatingType: 'TRADUCIENDO…',
     briefIdleType: 'TU IDEA',
     briefIdleTitle: 'El brief aparecerá aquí',
     briefIdleText: 'Pulsa generar y la IA rellenará el formato, el nicho y los requisitos.',
@@ -192,6 +196,7 @@ const es: Messages = {
     tag: 'SIN PLANTILLAS / SIN EXCUSAS',
     machineName: 'GENERADOR / 01',
     statusBusy: 'GENERANDO',
+    statusTranslating: 'TRADUCIENDO',
     statusReady: 'IA',
     statusIdle: 'ESPERANDO',
     format: 'FORMATO',
@@ -229,6 +234,7 @@ const es: Messages = {
     loadingKicker: 'PROPUESTA / GENERANDO',
     loadingTitle: 'Escribiendo tu idea',
     loadingText: 'La IA está cruzando formato, nicho y requisitos.',
+    translating: 'Traduciendo la idea…',
   },
   history: {
     eyebrow: '03 / TU ARCHIVO',
@@ -336,6 +342,7 @@ const en: Messages = {
     briefNiche: 'NICHE',
     briefLevel: 'LEVEL',
     briefThinkingType: 'THINKING…',
+    briefTranslatingType: 'TRANSLATING…',
     briefIdleType: 'YOUR IDEA',
     briefIdleTitle: 'Your brief will appear here',
     briefIdleText: 'Hit generate and AI will fill in the format, the niche and the requirements.',
@@ -357,6 +364,7 @@ const en: Messages = {
     tag: 'NO TEMPLATES / NO EXCUSES',
     machineName: 'GENERATOR / 01',
     statusBusy: 'GENERATING',
+    statusTranslating: 'TRANSLATING',
     statusReady: 'AI',
     statusIdle: 'WAITING',
     format: 'FORMAT',
@@ -394,6 +402,7 @@ const en: Messages = {
     loadingKicker: 'PROPOSAL / GENERATING',
     loadingTitle: 'Writing your idea',
     loadingText: 'AI is crossing format, niche and requirements.',
+    translating: 'Translating the idea…',
   },
   history: {
     eyebrow: '03 / YOUR ARCHIVE',

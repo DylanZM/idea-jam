@@ -1,52 +1,54 @@
 # IDEA JAM
 
-Generador de tópicos random para tu próxima landing, SaaS, juego o experimento web. La IA genera desde cero el formato, el nicho, el título, una descripción clara y lo que el proyecto tiene que tener; el resultado se guarda en un historial local para volver a abrirlo cuando quieras.
+A random topic generator for your next landing page, SaaS, game or web experiment. The AI writes the format, niche, title, a clear description and what the project must include from scratch; every result is saved to a local history so you can reopen it later.
 
-## Qué incluye
+## What it includes
 
-- Ideas generadas desde cero con IA, sin catálogos ni plantillas fijas.
-- Interfaz bilingüe español/inglés con selector de idioma persistente.
-- Brief con formato, nicho, título, descripción, dificultad y checklist de lo que el proyecto tiene que tener.
-- Ideas nuevas que evitan repetir el formato, el nicho o el título de las recientes.
-- Tirada animada con atajo de teclado `G`.
-- Límite local anti-abuso: 5 ideas por minuto, 100 al día y 5 s entre tiradas.
-- Botón para copiar el brief como texto.
-- Historial de las últimas 10 ideas completas en `localStorage`.
-- Diseño neo-brutalista responsive, sin cuenta ni backend.
+- Ideas generated from scratch with AI, no fixed catalogs or templates.
+- Bilingual Spanish/English interface with a persistent language selector.
+- Switching language also translates the idea currently on screen.
+- Brief with format, niche, title, description, difficulty and a checklist of what the project must include.
+- New ideas that avoid repeating the format, niche or title of recent ones.
+- Animated roll with the `G` keyboard shortcut.
+- Local anti-abuse limit: 5 ideas per minute, 100 per day and 5 s between rolls.
+- Button to copy the brief as text.
+- History of the last 10 complete ideas in `localStorage`.
+- Responsive neo-brutalist design with animated icons, no account or backend.
 
 ## Stack
 
 - React 19 + TypeScript
 - Vite 8
-- Google Gemini API (`gemini-3.1-flash-lite` por defecto)
-- CSS propio con tipografías Anton, Space Grotesk e IBM Plex Mono
-- Componentes pixel de [Piixpal](https://piixpal.dvkk.dev/) v0.4.0 (MIT)
+- Google Gemini API (`gemini-3.1-flash-lite` by default)
+- Custom CSS with Archivo Black, Space Grotesk and JetBrains Mono typefaces
+- Animated icons from [AnimateIcons](https://animateicons.in/)
+- Pixel components from [Piixpal](https://piixpal.dvkk.dev/) v0.4.0 (MIT)
 
-## Configuración de IA
+## AI setup
 
-Copia `.env.example` a `.env` y completa la clave:
+Copy `.env.example` to `.env` and fill in the key:
 
 ```bash
 cp .env.example .env
 ```
 
 ```env
-AI_PROVIDER_API_KEY=tu_api_key
+AI_PROVIDER_API_KEY=your_api_key
 AI_PROVIDER_MODEL=gemini-3.1-flash-lite
 ```
 
-La app llama a Gemini directamente desde el navegador, así que la clave se incluye en el bundle del cliente. Úsala solo en local o en un despliegue privado. Si falta la clave o la petición falla, la app muestra un error y conserva la última idea generada.
+The app calls Gemini directly from the browser, so the key is included in the client bundle. Use this only locally or in a private deployment. If the key is missing or the request fails, the app shows an error and keeps the last generated idea.
 
-El límite de generación es del lado del cliente: evita el uso accidental y los dobles clics, pero no protege la clave frente a alguien que inspeccione el bundle. Para un despliegue público, mueve la llamada a un backend o proxy con la clave fuera del cliente.
+The generation limit runs on the client: it prevents accidental use and double clicks, but it does not protect the key from someone inspecting the bundle. For a public deployment, move the request to a backend or proxy with the key kept off the client.
 
-## Desarrollo
+## Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Build de producción:
+Production build:
 
 ```bash
 npm run build
@@ -59,21 +61,23 @@ Lint:
 npm run lint
 ```
 
-## Estructura
+## Structure
 
 ```text
 src/
-  components/   UI: hero, generador, ticket, historial, cómo funciona, footer
-  hooks/        historial persistente y límite de generación
-  lib/          IA, identificadores, formato, rate limit y almacenamiento
-  i18n.tsx      traducciones ES/EN y provider de idioma
-  types.ts      tipos del dominio
+  components/   UI: hero, generator, ticket, history, how it works, footer
+  hooks/        persistent history and generation limit
+  lib/          AI, identifiers, formatting, rate limit and storage
+  i18n.tsx      ES/EN translations and language provider
+  types.ts      domain types
 public/
-  dist/         core y componentes vendorizados de Piixpal + licencia MIT
+  dist/         vendored Piixpal core and components + MIT license
 ```
 
-## Créditos
+## Credits
 
-Los componentes pixel (`piix-sprite`, `piix-pal`, `piix-marquee`, `piix-flap`, `piix-divider`) pertenecen a [Piixpal](https://piixpal.dvkk.dev/) y se distribuyen bajo licencia MIT. El aviso completo está en `public/dist/PIIXPAL-LICENSE.txt`.
+The pixel components (`piix-sprite`, `piix-pal`, `piix-marquee`, `piix-flap`, `piix-divider`) belong to [Piixpal](https://piixpal.dvkk.dev/) and are distributed under the MIT license. The full notice is in `public/dist/PIIXPAL-LICENSE.txt`.
 
-Hecho por [DylanZM](https://github.com/DylanZM).
+Animated icons are provided by [AnimateIcons](https://animateicons.in/).
+
+Made by [DylanZM](https://github.com/DylanZM).

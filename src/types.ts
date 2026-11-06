@@ -14,6 +14,7 @@ export interface Idea {
   features: string[]
   difficulty: Difficulty
   accent: Accent
+  language?: Language
 }
 
 export interface HistoryEntry {
