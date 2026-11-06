@@ -28,21 +28,34 @@
   </head>
   <body>
     <div id="root"></div>
-    <script defer src="%BASE_URL%dist/core.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/bitbug.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/pip.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/moss.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/boing.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/kitty.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/mochi.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/gloop.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/dice.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/star.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/bolt.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/heart.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/marquee.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/flap.min.js"></script>
-    <script defer src="%BASE_URL%dist/c/divider.min.js"></script>
+    <script>
+      ;(() => {
+        const files = [
+          'core.min.js',
+          'c/bitbug.min.js',
+          'c/pip.min.js',
+          'c/moss.min.js',
+          'c/boing.min.js',
+          'c/kitty.min.js',
+          'c/mochi.min.js',
+          'c/gloop.min.js',
+          'c/dice.min.js',
+          'c/star.min.js',
+          'c/bolt.min.js',
+          'c/heart.min.js',
+          'c/marquee.min.js',
+          'c/flap.min.js',
+          'c/divider.min.js',
+        ]
+        const base = new URL('dist/', document.baseURI)
+        for (const file of files) {
+          const script = document.createElement('script')
+          script.src = new URL(file, base).href
+          script.async = false
+          document.head.appendChild(script)
+        }
+      })()
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
