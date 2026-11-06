@@ -1,12 +1,17 @@
-import type { Idea } from '../types'
+import { useEffect, useState } from 'react'
+import { useI18n } from '../i18n'
+import type { GeneratorError, Idea } from '../types'
 import { IdeaTicket } from './IdeaTicket'
 import { Sparkle, Terminal } from './Icons'
 
 type GeneratorProps = {
   idea: Idea | null
-  error: string
+  error: GeneratorError | ''
   isRolling: boolean
   onGenerate: () => void
+  cooldownSeconds: number
+  minuteLimit: number
+  dayLimit: number
 }
 
 function Slot({
@@ -36,29 +41,57 @@ function Slot({
   )
 }
 
-export function Generator({ idea, error, isRolling, onGenerate }: GeneratorProps) {
+export function Generator({
+  idea,
+  error,
+  isRolling,
+  onGenerate,
+  cooldownSeconds,
+  minuteLimit,
+  dayLimit,
+}: GeneratorProps) {
+  const { messages } = useI18n()
+  const [thought, setThought] = useState(0)
+  const thinking = messages.generator.thinking
+
+  useEffect(() => {
+    if (!isRolling) return
+    const tick = window.setInterval(() => {
+      setThought((current) => (current + 1) % thinking.length)
+    }, 1_400)
+    return () => window.clearInterval(tick)
+  }, [isRolling, thinking.length])
+
+  const coolingDown = cooldownSeconds > 0
+  const buttonLabel = isRolling
+    ? messages.generator.generating
+    : coolingDown
+      ? messages.generator.cooldown.replace('{seconds}', String(cooldownSeconds))
+      : messages.generator.generate
+
+  const rateNote = messages.generator.rateNote
+    .replace('{minute}', String(minuteLimit))
+    .replace('{day}', String(dayLimit))
+
   return (
     <section className="section generator-section" id="generador">
       <div className="container">
         <div className="section-head generator-head">
           <div>
-            <span className="eyebrow">02 / EL GENERADOR</span>
+            <span className="eyebrow">{messages.generator.eyebrow}</span>
             <h2>
-              Tira.
+              {messages.generator.title1}
               <br />
-              <em>Mezcla.</em>
+              <em>{messages.generator.title2}</em>
               <br />
-              Publica.
+              {messages.generator.title3}
             </h2>
           </div>
           <div className="generator-intro">
-            <p>
-              La IA decide el formato, el nicho y escribe el brief completo. El resultado no es
-              una idea perfecta: es una idea que puedes empezar hoy.
-            </p>
+            <p>{messages.generator.intro}</p>
             <span className="generator-tag">
               <Sparkle className="icon" />
-              SIN PLANTILLAS / SIN EXCUSAS
+              {messages.generator.tag}
             </span>
           </div>
         </div>
@@ -67,51 +100,71 @@ export function Generator({ idea, error, isRolling, onGenerate }: GeneratorProps
           <div className="machine-top">
             <span className="machine-name">
               <Terminal className="icon" />
-              GENERADOR / 01
+              {messages.generator.machineName}
             </span>
             <span className={`status-pill${isRolling ? ' is-busy' : ''}`}>
               <span className="status-dot" aria-hidden />
-              {isRolling ? 'GENERANDO' : idea ? 'IA' : 'ESPERANDO'}
+              {isRolling
+                ? messages.generator.statusBusy
+                : idea
+                  ? messages.generator.statusReady
+                  : messages.generator.statusIdle}
             </span>
           </div>
 
           <div className="reels" aria-busy={isRolling}>
             <Slot
               index="01"
-              label="FORMATO"
-              value={isRolling ? 'GENERANDO…' : idea?.type ?? '— — —'}
+              label={messages.generator.format}
+              value={isRolling ? messages.generator.generating : idea?.type ?? messages.generator.placeholder}
               accent="lime"
               rolling={isRolling}
             />
             <Slot
               index="02"
-              label="NICHO"
-              value={isRolling ? 'GENERANDO…' : idea?.theme ?? '— — —'}
+              label={messages.generator.niche}
+              value={isRolling ? messages.generator.generating : idea?.theme ?? messages.generator.placeholder}
               accent="coral"
               rolling={isRolling}
             />
           </div>
+
+          {isRolling ? (
+            <div className="machine-thinking" aria-live="polite">
+              <span className="thinking-dot" aria-hidden />
+              {thinking[thought]}
+              <span className="thinking-ellipsis" aria-hidden>
+                …
+              </span>
+            </div>
+          ) : null}
 
           <div className="machine-controls">
             <button
               className="btn btn-orange btn-xl generate-btn js-generate"
               type="button"
               onClick={onGenerate}
-              disabled={isRolling}
+              disabled={isRolling || coolingDown}
             >
               <Sparkle className={`icon${isRolling ? ' spin' : ''}`} />
-              <span>{isRolling ? 'GENERANDO…' : 'GENERAR IDEA'}</span>
-              <span className="btn-key">{isRolling ? '···' : 'G'}</span>
+              <span>{buttonLabel}</span>
+              <span className="btn-key">{isRolling ? '···' : coolingDown ? cooldownSeconds : 'G'}</span>
             </button>
-            {error ? (
-              <p className="machine-error" role="alert">
-                {error}
-              </p>
-            ) : (
-              <p className="machine-note">
-                Un clic. Una idea. Si no te convence, vuelve a tirar.
-              </p>
-            )}
+
+            <div className="machine-status">
+              {error ? (
+                <p className="machine-error" role="alert">
+                  {messages.generator.errors[error]}
+                </p>
+              ) : coolingDown ? (
+                <p className="machine-note">
+                  {messages.generator.cooldown.replace('{seconds}', String(cooldownSeconds))}
+                </p>
+              ) : (
+                <p className="machine-note">{messages.generator.note}</p>
+              )}
+              <p className="machine-rate">{rateNote}</p>
+            </div>
           </div>
 
           <piix-pal pal="pip" on=".js-generate" scale="3" />

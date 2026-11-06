@@ -7,8 +7,10 @@ import { HowItWorks } from './components/HowItWorks'
 import { Nav } from './components/Nav'
 import { Ticker } from './components/Ticker'
 import { useHistory } from './hooks/useHistory'
-import { generateAIIdea } from './lib/ai'
-import type { Idea } from './types'
+import { useRateLimit } from './hooks/useRateLimit'
+import { useI18n } from './i18n'
+import { generateAIIdea, MissingKeyError, RateLimitError } from './lib/ai'
+import type { GeneratorError, Idea } from './types'
 
 const ROLL_DURATION = 760
 
@@ -17,17 +19,31 @@ function wait(ms: number): Promise<void> {
 }
 
 export default function App() {
+  const { language, messages } = useI18n()
   const [idea, setIdea] = useState<Idea | null>(null)
   const [isRolling, setIsRolling] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<GeneratorError | ''>('')
   const { entries, add, clear } = useHistory()
+  const { snapshot, check, consume, refund } = useRateLimit()
   const request = useRef(0)
 
   const generate = useCallback(() => {
     if (isRolling) return
 
+    const gate = check()
+    if (!gate.allowed) {
+      setError(gate.reason === 'day' ? 'day' : 'rate')
+      return
+    }
+
     const requestId = ++request.current
+    const reserved = consume()
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const avoid = entries.map(({ idea: previous }) => ({
+      type: previous.type,
+      theme: previous.theme,
+      title: previous.title,
+    }))
 
     setIsRolling(true)
     setError('')
@@ -37,11 +53,18 @@ export default function App() {
       let next: Idea
 
       try {
-        next = await generateAIIdea()
+        next = await generateAIIdea({ language, avoid })
       } catch (generationError) {
         console.warn('No se pudo generar la idea con IA.', generationError)
         if (requestId !== request.current) return
-        setError('No se pudo generar la idea. Revisa la clave de la IA o vuelve a intentarlo.')
+        if (!(generationError instanceof RateLimitError)) refund(reserved)
+        setError(
+          generationError instanceof RateLimitError
+            ? 'rate'
+            : generationError instanceof MissingKeyError
+              ? 'missingKey'
+              : 'generic',
+        )
         setIsRolling(false)
         return
       }
@@ -59,7 +82,10 @@ export default function App() {
     }
 
     void run()
-  }, [add, isRolling])
+  }, [add, check, consume, entries, isRolling, language, refund])
+
+  const visibleError: GeneratorError | '' =
+    (error === 'rate' || error === 'day') && snapshot.allowed ? '' : error
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -93,7 +119,7 @@ export default function App() {
   return (
     <div className="app">
       <a className="skip-link" href="#generador">
-        Saltar al generador
+        {messages.nav.skip}
       </a>
 
       <Nav />
@@ -111,7 +137,15 @@ export default function App() {
           <piix-divider kind="wave" from="#1f3cff" to="#ecebe6" />
         </div>
 
-        <Generator idea={idea} error={error} isRolling={isRolling} onGenerate={generate} />
+        <Generator
+          idea={idea}
+          error={visibleError}
+          isRolling={isRolling}
+          onGenerate={generate}
+          cooldownSeconds={snapshot.cooldownSeconds}
+          minuteLimit={snapshot.minuteLimit}
+          dayLimit={snapshot.dayLimit}
+        />
         <History entries={entries} onOpen={openFromHistory} onClear={clear} />
         <HowItWorks />
       </main>

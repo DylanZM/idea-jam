@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { difficultyLabel } from '../lib/generator'
+import { useI18n } from '../i18n'
+import type { Messages } from '../i18n'
 import type { Idea } from '../types'
 import { Check, Copy } from './Icons'
 
@@ -10,7 +11,7 @@ type IdeaTicketProps = {
 
 type CopyState = 'idle' | 'copied' | 'error'
 
-function buildBrief(idea: Idea): string {
+function buildBrief(idea: Idea, messages: Messages): string {
   return [
     `IDEA JAM #${idea.id}`,
     '',
@@ -18,16 +19,17 @@ function buildBrief(idea: Idea): string {
     '',
     idea.description,
     '',
-    `FORMATO: ${idea.type}`,
-    `NICHO: ${idea.theme}`,
-    `DIFICULTAD: ${difficultyLabel(idea.difficulty)}`,
+    `${messages.generator.format}: ${idea.type}`,
+    `${messages.ticket.metaNiche.toUpperCase()}: ${idea.theme}`,
+    `${messages.ticket.metaLevel.toUpperCase()}: ${messages.difficulty[idea.difficulty]}`,
     '',
-    'LO QUE TIENE QUE TENER',
+    messages.ticket.featuresHeading.toUpperCase(),
     ...idea.features.map((feature) => `- ${feature}`),
   ].join('\n')
 }
 
 export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
+  const { messages } = useI18n()
   const [copyState, setCopyState] = useState<CopyState>('idle')
   const timeout = useRef<number | null>(null)
 
@@ -37,24 +39,50 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
     }
   }, [])
 
+  if (!idea && isRolling) {
+    return (
+      <article className="ticket ticket-loading" id="idea-result" aria-live="polite" aria-busy>
+        <div className="ticket-perf" aria-hidden />
+        <header className="ticket-head">
+          <span className="ticket-code">{messages.ticket.code} —</span>
+          <span className="ticket-stamp" aria-hidden>
+            {messages.ticket.brief}
+          </span>
+        </header>
+        <div className="ticket-main">
+          <div className="ticket-title-wrap">
+            <span className="ticket-kicker">{messages.ticket.loadingKicker}</span>
+            <h3>{messages.ticket.loadingTitle}</h3>
+            <p className="ticket-pitch">{messages.ticket.loadingText}</p>
+            <div className="ticket-skeleton" aria-hidden>
+              <span className="skeleton-line" />
+              <span className="skeleton-line" />
+              <span className="skeleton-line skeleton-line-short" />
+            </div>
+          </div>
+          <div className="ticket-flap ticket-flap-ghost" aria-hidden />
+        </div>
+      </article>
+    )
+  }
+
   if (!idea) {
     return (
       <article className="ticket ticket-empty" id="idea-result">
         <div className="ticket-perf" aria-hidden />
         <header className="ticket-head">
-          <span className="ticket-code">IDEA —</span>
+          <span className="ticket-code">
+            {messages.ticket.code} —
+          </span>
           <span className="ticket-stamp" aria-hidden>
-            BRIEF
+            {messages.ticket.brief}
           </span>
         </header>
         <div className="ticket-main">
           <div className="ticket-title-wrap">
-            <span className="ticket-kicker">PROPUESTA / IA</span>
-            <h3>Tu próxima idea empieza aquí</h3>
-            <p className="ticket-pitch">
-              Pulsa generar y la IA escribirá el formato, el nicho, una descripción clara y lo
-              que el proyecto tiene que tener.
-            </p>
+            <span className="ticket-kicker">{messages.ticket.emptyKicker}</span>
+            <h3>{messages.ticket.emptyTitle}</h3>
+            <p className="ticket-pitch">{messages.ticket.emptyText}</p>
           </div>
         </div>
         <piix-pal pal="kitty" scale="3" at="0.92" />
@@ -64,7 +92,7 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(buildBrief(idea))
+      await navigator.clipboard.writeText(buildBrief(idea, messages))
       setCopyState('copied')
     } catch {
       setCopyState('error')
@@ -83,39 +111,43 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
       <div className="ticket-perf" aria-hidden />
 
       <header className="ticket-head">
-        <span className="ticket-code">IDEA #{idea.id}</span>
+        <span className="ticket-code">
+          {messages.ticket.code} #{idea.id}
+        </span>
         <span className={`tag tag-${idea.accent}`}>{idea.type}</span>
         <span className="ticket-stamp" aria-hidden>
-          BRIEF
+          {messages.ticket.brief}
         </span>
       </header>
 
       <div className="ticket-main">
         <div className="ticket-title-wrap">
-          <span className="ticket-kicker">PROPUESTA / {idea.theme.toUpperCase()}</span>
+          <span className="ticket-kicker">
+            {messages.ticket.proposal} / {idea.theme.toUpperCase()}
+          </span>
           <h3>{idea.title}</h3>
           <p className="ticket-pitch">{idea.description}</p>
         </div>
 
         <div className="ticket-flap" aria-hidden>
-          <piix-flap key={idea.id} text={`IDEA ${idea.id}`} length={9} />
+          <piix-flap key={idea.id} text={`${messages.ticket.code} ${idea.id}`} length={9} />
           <span className="ticket-flap-label">SPLIT-FLAP / IDEA ID</span>
         </div>
       </div>
 
       <dl className="ticket-meta">
         <div>
-          <dt>Nicho</dt>
+          <dt>{messages.ticket.metaNiche}</dt>
           <dd>{idea.theme}</dd>
         </div>
         <div>
-          <dt>Nivel</dt>
-          <dd>{difficultyLabel(idea.difficulty)}</dd>
+          <dt>{messages.ticket.metaLevel}</dt>
+          <dd>{messages.difficulty[idea.difficulty]}</dd>
         </div>
       </dl>
 
       <div className="ticket-features">
-        <h4>Lo que tiene que tener</h4>
+        <h4>{messages.ticket.featuresHeading}</h4>
         <ul>
           {idea.features.map((feature) => (
             <li key={feature}>
@@ -129,7 +161,9 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
       </div>
 
       <footer className="ticket-foot">
-        <span className="ticket-seed">SEED {idea.seed.toString(16).toUpperCase()}</span>
+        <span className="ticket-seed">
+          {messages.ticket.seed} {idea.seed.toString(16).toUpperCase()}
+        </span>
         <span className="ticket-barcode" aria-hidden>
           {Array.from({ length: 22 }, (_, index) => (
             <i key={index} />
@@ -139,14 +173,14 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
           {copyState === 'copied' ? (
             <>
               <Check className="icon" />
-              COPIADO
+              {messages.ticket.copied}
             </>
           ) : copyState === 'error' ? (
-            'NO SE PUDO'
+            messages.ticket.copyError
           ) : (
             <>
               <Copy className="icon" />
-              COPIAR BRIEF
+              {messages.ticket.copy}
             </>
           )}
         </button>

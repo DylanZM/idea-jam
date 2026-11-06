@@ -14,12 +14,6 @@ export function clampDifficulty(value: number): Difficulty {
   return Math.min(3, Math.max(1, Math.round(value))) as Difficulty
 }
 
-export function difficultyLabel(value: Difficulty): string {
-  if (value === 1) return 'Fácil'
-  if (value === 2) return 'Medio'
-  return 'Ambicioso'
-}
-
 export function ideaCode(seed: number): string {
   return seed.toString(36).toUpperCase().padStart(4, '0').slice(-4)
 }

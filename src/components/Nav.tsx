@@ -1,10 +1,14 @@
+import { useI18n } from '../i18n'
 import { ArrowDown, Sparkle } from './Icons'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 export function Nav() {
+  const { messages } = useI18n()
+
   return (
     <header className="nav">
       <div className="nav-inner container">
-        <a className="logo" href="#top" aria-label="IDEA JAM, volver al inicio">
+        <a className="logo" href="#top" aria-label={messages.nav.homeAria}>
           <span className="logo-mark" aria-hidden>
             <Sparkle className="logo-spark" />
           </span>
@@ -13,16 +17,20 @@ export function Nav() {
           </span>
         </a>
 
-        <nav className="nav-links" aria-label="Navegación principal">
-          <a href="#generador">Generador</a>
-          <a href="#historial">Historial</a>
-          <a href="#como-funciona">Cómo funciona</a>
-        </nav>
+        <div className="nav-actions">
+          <nav className="nav-links" aria-label={messages.nav.mainAria}>
+            <a href="#generador">{messages.nav.generator}</a>
+            <a href="#historial">{messages.nav.history}</a>
+            <a href="#como-funciona">{messages.nav.howItWorks}</a>
+          </nav>
 
-        <a className="btn btn-blue btn-sm nav-cta" href="#generador">
-          GENERAR
-          <ArrowDown className="icon" />
-        </a>
+          <LanguageSwitcher />
+
+          <a className="btn btn-blue btn-sm nav-cta" href="#generador">
+            {messages.nav.cta}
+            <ArrowDown className="icon" />
+          </a>
+        </div>
       </div>
     </header>
   )

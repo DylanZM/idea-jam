@@ -1,52 +1,32 @@
-const steps = [
-  {
-    number: '01',
-    title: 'Abre el generador',
-    text: 'No hay configuración, cuenta ni onboarding. Solo un botón y muchas posibilidades.',
-    sprite: 'mochi',
-    accent: 'lime',
-  },
-  {
-    number: '02',
-    title: 'Pulsa generar',
-    text: 'La IA decide el formato y el nicho, y escribe el título, una descripción clara y lo que el proyecto tiene que tener. Si algo no encaja, vuelve a tirar.',
-    sprite: 'bolt',
-    accent: 'coral',
-  },
-  {
-    number: '03',
-    title: 'Construye',
-    text: 'La idea queda en tu historial. Conviértela en una landing, un juego o lo que sea.',
-    sprite: 'heart',
-    accent: 'violet',
-  },
-] as const
+import { useI18n } from '../i18n'
+
+const sprites = ['mochi', 'bolt', 'heart'] as const
+const accents = ['lime', 'coral', 'violet'] as const
 
 export function HowItWorks() {
+  const { messages } = useI18n()
+
   return (
     <section className="section how-section" id="como-funciona">
       <div className="container">
         <div className="section-head how-head">
           <div>
-            <span className="eyebrow">04 / CÓMO FUNCIONA</span>
+            <span className="eyebrow">{messages.how.eyebrow}</span>
             <h2>
-              Tres pasos.
+              {messages.how.title1}
               <br />
-              <em>Cero excusas.</em>
+              <em>{messages.how.title2}</em>
             </h2>
           </div>
-          <p>
-            La IA no te dice qué construir. Te da una idea concreta y un brief claro para
-            empezar hoy.
-          </p>
+          <p>{messages.how.intro}</p>
         </div>
 
         <div className="steps">
-          {steps.map((step) => (
-            <article className={`step step-${step.accent}`} key={step.number}>
+          {messages.how.steps.map((step, index) => (
+            <article className={`step step-${accents[index] ?? 'coral'}`} key={step.title}>
               <div className="step-top">
-                <span className="step-number">{step.number}</span>
-                <piix-sprite name={step.sprite} size="64" />
+                <span className="step-number">{String(index + 1).padStart(2, '0')}</span>
+                <piix-sprite name={sprites[index] ?? 'mochi'} size="64" />
               </div>
               <h3>{step.title}</h3>
               <p>{step.text}</p>
@@ -59,11 +39,11 @@ export function HowItWorks() {
             “
           </span>
           <p>
-            La hoja en blanco no es el enemigo.
+            {messages.how.quote1}
             <br />
-            <strong>La IA escribe el brief.</strong>
+            <strong>{messages.how.quote2}</strong>
           </p>
-          <span className="quote-tag">MANIFIESTO IDEA JAM</span>
+          <span className="quote-tag">{messages.how.quoteTag}</span>
         </aside>
       </div>
     </section>

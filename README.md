@@ -5,8 +5,11 @@ Generador de tópicos random para tu próxima landing, SaaS, juego o experimento
 ## Qué incluye
 
 - Ideas generadas desde cero con IA, sin catálogos ni plantillas fijas.
+- Interfaz bilingüe español/inglés con selector de idioma persistente.
 - Brief con formato, nicho, título, descripción, dificultad y checklist de lo que el proyecto tiene que tener.
+- Ideas nuevas que evitan repetir el formato, el nicho o el título de las recientes.
 - Tirada animada con atajo de teclado `G`.
+- Límite local anti-abuso: 5 ideas por minuto, 100 al día y 5 s entre tiradas.
 - Botón para copiar el brief como texto.
 - Historial de las últimas 10 ideas completas en `localStorage`.
 - Diseño neo-brutalista responsive, sin cuenta ni backend.
@@ -34,6 +37,8 @@ AI_PROVIDER_MODEL=gemini-3.1-flash-lite
 
 La app llama a Gemini directamente desde el navegador, así que la clave se incluye en el bundle del cliente. Úsala solo en local o en un despliegue privado. Si falta la clave o la petición falla, la app muestra un error y conserva la última idea generada.
 
+El límite de generación es del lado del cliente: evita el uso accidental y los dobles clics, pero no protege la clave frente a alguien que inspeccione el bundle. Para un despliegue público, mueve la llamada a un backend o proxy con la clave fuera del cliente.
+
 ## Desarrollo
 
 ```bash
@@ -59,8 +64,9 @@ npm run lint
 ```text
 src/
   components/   UI: hero, generador, ticket, historial, cómo funciona, footer
-  hooks/        historial persistente
-  lib/          IA, identificadores, formato y almacenamiento
+  hooks/        historial persistente y límite de generación
+  lib/          IA, identificadores, formato, rate limit y almacenamiento
+  i18n.tsx      traducciones ES/EN y provider de idioma
   types.ts      tipos del dominio
 public/
   dist/         core y componentes vendorizados de Piixpal + licencia MIT

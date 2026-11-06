@@ -1,5 +1,8 @@
 export type Accent = 'lime' | 'coral' | 'violet' | 'sky' | 'sun' | 'mint'
 export type Difficulty = 1 | 2 | 3
+export type Language = 'es' | 'en'
+export type RateLimitReason = 'minute' | 'day' | 'cooldown'
+export type GeneratorError = 'generic' | 'rate' | 'day' | 'missingKey'
 
 export interface Idea {
   id: string
