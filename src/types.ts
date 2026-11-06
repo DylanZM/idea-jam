@@ -17,26 +17,11 @@ export interface Theme {
   label: string
 }
 
-export interface Twist {
-  id: string
-  label: string
-  feature: string
-}
-
-export interface Stack {
-  id: string
-  label: string
-  detail: string
-  difficulty: Difficulty
-}
-
 export interface Idea {
   id: string
   seed: number
   type: ProjectType
   theme: Theme
-  twist: Twist
-  stack: Stack
   title: string
   pitch: string
   features: string[]
@@ -44,6 +29,6 @@ export interface Idea {
 }
 
 export interface HistoryEntry {
-  seed: number
+  idea: Idea
   createdAt: number
 }

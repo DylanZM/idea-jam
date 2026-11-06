@@ -7,15 +7,17 @@ const items = [
   'REVISTA',
   'DASHBOARD',
   'EXPERIMENTO',
-  'SIN IMÁGENES',
-  'OFFLINE',
-  'SOLO TIPOGRAFÍA',
-  '8-BIT',
+  'CAFÉ DE ESPECIALIDAD',
+  'PLANTAS DE INTERIOR',
+  'ASTRONOMÍA AMATEUR',
+  'CICLISMO URBANO',
+  'FOTOGRAFÍA ANALÓGICA',
+  'VINILOS DE SEGUNDA MANO',
 ]
 
 export function Ticker() {
   return (
-    <section className="ticker" aria-label="Categorías y restricciones">
+    <section className="ticker" aria-label="Formatos y nichos">
       <piix-marquee speed="30">
         {items.map((item, index) => (
           <span className="ticker-item" key={`${item}-${index}`}>

@@ -1,4 +1,4 @@
-import { GENERIC_FEATURES, PROJECT_TYPES, STACKS, THEMES, TWISTS } from '../data/ideas'
+import { GENERIC_FEATURES, PROJECT_TYPES, THEMES } from '../data/ideas'
 import type { Difficulty, Idea } from '../types'
 
 let seedCounter = 0
@@ -63,32 +63,26 @@ export function generateIdea(seed = createSeed()): Idea {
 
   const type = pick(random, PROJECT_TYPES)
   const theme = pick(random, THEMES)
-  const twist = pick(random, TWISTS)
-  const stack = pick(random, STACKS)
 
   const values = {
     theme: theme.label,
     Theme: capitalize(theme.label),
-    twist: twist.label,
   }
 
   const title = fill(pick(random, type.titles), values)
   const pitch = fill(pick(random, type.pitches), values)
   const features = [
     ...pickMany(random, type.features, 3),
-    twist.feature,
     ...(random() > 0.55 ? pickMany(random, GENERIC_FEATURES, 1) : []),
   ]
 
-  const difficulty = clampDifficulty((type.difficulty + stack.difficulty) / 2)
+  const difficulty = type.difficulty
 
   return {
     id: ideaCode(seed),
     seed,
     type,
     theme,
-    twist,
-    stack,
     title,
     pitch,
     features,

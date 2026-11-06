@@ -1,32 +1,58 @@
-# React + TypeScript + Vite
+# IDEA JAM
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Generador de tópicos random para tu próxima landing, SaaS, juego o experimento web. Cada tirada cruza un formato y un nicho; el resultado se guarda en un historial local para volver a abrirlo cuando quieras.
 
-Currently, two official plugins are available:
+## Qué incluye
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Generador con 14 formatos y 42 nichos.
+- Tirada animada con atajo de teclado `G`.
+- Brief completo con título, pitch, dificultad y checklist de features.
+- Botón para copiar el brief como texto.
+- Historial de las últimas 10 ideas en `localStorage`.
+- Diseño neo-brutalista responsive, sin cuenta ni backend.
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + TypeScript
+- Vite 8
+- CSS propio con tipografías Anton, Space Grotesk e IBM Plex Mono
+- Componentes pixel de [Piixpal](https://piixpal.dvkk.dev/) v0.4.0 (MIT)
 
-## Expanding the Oxlint configuration
+## Desarrollo
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Build de producción:
+
+```bash
+npm run build
+npm run preview
+```
+
+Lint:
+
+```bash
+npm run lint
+```
+
+## Estructura
+
+```text
+src/
+  components/   UI: hero, generador, ticket, historial, cómo funciona, footer
+  data/         formatos y nichos
+  hooks/        historial persistente
+  lib/          generación, formato y almacenamiento
+  types.ts      tipos del dominio
+public/
+  dist/         core y componentes vendorizados de Piixpal + licencia MIT
+```
+
+## Créditos
+
+Los componentes pixel (`piix-sprite`, `piix-pal`, `piix-marquee`, `piix-flap`, `piix-divider`) pertenecen a [Piixpal](https://piixpal.dvkk.dev/) y se distribuyen bajo licencia MIT. El aviso completo está en `public/dist/PIIXPAL-LICENSE.txt`.
+
+Hecho por [DylanZM](https://github.com/DylanZM).

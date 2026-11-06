@@ -573,7 +573,7 @@ canvas {
 
 .hero-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   margin-top: 34px;
   border-top: var(--border);
 }
@@ -975,7 +975,7 @@ piix-marquee {
 
 .reels {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   padding: 18px;
   border-bottom: var(--border);
@@ -1187,7 +1187,7 @@ piix-marquee {
 
 .ticket-meta {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   border-top: var(--border);
   border-bottom: var(--border);
 }
@@ -2125,10 +2125,6 @@ piix-sprite {
 
   .ticket-meta > div:nth-child(2) {
     border-right: 0;
-  }
-
-  .ticket-meta > div:nth-child(-n + 2) {
-    border-bottom: 2px solid var(--ink);
   }
 
   .ticket-features ul {

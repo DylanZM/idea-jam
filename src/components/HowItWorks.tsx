@@ -9,7 +9,7 @@ const steps = [
   {
     number: '02',
     title: 'Pulsa generar',
-    text: 'Tipo de proyecto, tema, restricción y stack. Si algo no encaja, vuelve a tirar.',
+    text: 'Un formato y un tema al azar. La IA escribe el título, el pitch y las features. Si algo no encaja, vuelve a tirar.',
     sprite: 'bolt',
     accent: 'coral',
   },
@@ -36,8 +36,8 @@ export function HowItWorks() {
             </h2>
           </div>
           <p>
-            Un generador no te dice qué construir. Te da una restricción lo bastante concreta
-            como para empezar hoy.
+            Un generador no te dice qué construir. Te da un formato y un nicho lo bastante
+            concretos como para empezar hoy.
           </p>
         </div>
 
@@ -59,9 +59,9 @@ export function HowItWorks() {
             “
           </span>
           <p>
-            La restricción no es el enemigo.
+            El formato no es el enemigo.
             <br />
-            <strong>Es el brief.</strong>
+            <strong>La hoja en blanco sí.</strong>
           </p>
           <span className="quote-tag">MANIFIESTO IDEA JAM</span>
         </aside>

@@ -1,12 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
-import { generateIdea } from '../lib/generator'
+import { useEffect, useState } from 'react'
 import { timeAgo } from '../lib/format'
-import type { HistoryEntry } from '../types'
+import type { HistoryEntry, Idea } from '../types'
 import { ArrowUpRight, Trash } from './Icons'
 
 type HistoryProps = {
   entries: HistoryEntry[]
-  onOpen: (seed: number) => void
+  onOpen: (idea: Idea) => void
   onClear: () => void
 }
 
@@ -19,10 +18,7 @@ export function History({ entries, onOpen, onClear }: HistoryProps) {
     return () => window.clearTimeout(timeout)
   }, [confirming])
 
-  const ideas = useMemo(
-    () => entries.map((entry) => ({ entry, idea: generateIdea(entry.seed) })),
-    [entries],
-  )
+  const ideas = entries
 
   const handleClear = () => {
     if (!confirming) {
@@ -75,19 +71,19 @@ export function History({ entries, onOpen, onClear }: HistoryProps) {
           </div>
         ) : (
           <div className="history-grid">
-            {ideas.map(({ entry, idea }, index) => (
+            {ideas.map(({ idea, createdAt }, index) => (
               <button
                 className={`history-card card-${idea.type.color}`}
                 type="button"
-                key={entry.seed}
-                onClick={() => onOpen(entry.seed)}
+                key={idea.seed}
+                onClick={() => onOpen(idea)}
                 aria-label={`Abrir idea ${idea.title}`}
               >
                 <div className="history-card-top">
                   <span className="history-number">
                     {String(ideas.length - index).padStart(2, '0')}
                   </span>
-                  <span className="history-time">{timeAgo(entry.createdAt)}</span>
+                  <span className="history-time">{timeAgo(createdAt)}</span>
                   <ArrowUpRight className="history-arrow icon" />
                 </div>
                 <span className={`tag tag-${idea.type.color}`}>{idea.type.label}</span>

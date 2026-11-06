@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { PROJECT_TYPES, THEMES, TWISTS } from '../data/ideas'
+import { PROJECT_TYPES, THEMES } from '../data/ideas'
 import type { Idea } from '../types'
 import { IdeaTicket } from './IdeaTicket'
 import { Sparkle, Terminal } from './Icons'
@@ -13,14 +13,12 @@ type GeneratorProps = {
 type Reel = {
   type: string
   theme: string
-  twist: string
 }
 
 function randomReel(): Reel {
   const type = PROJECT_TYPES[Math.floor(Math.random() * PROJECT_TYPES.length)]
   const theme = THEMES[Math.floor(Math.random() * THEMES.length)]
-  const twist = TWISTS[Math.floor(Math.random() * TWISTS.length)]
-  return { type: type.slot, theme: theme.label, twist: twist.label }
+  return { type: type.slot, theme: theme.label }
 }
 
 function Slot({
@@ -54,7 +52,6 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
   const [reel, setReel] = useState<Reel>(() => ({
     type: idea.type.slot,
     theme: idea.theme.label,
-    twist: idea.twist.label,
   }))
 
   useEffect(() => {
@@ -79,8 +76,8 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
           </div>
           <div className="generator-intro">
             <p>
-              Cada tirada cruza un formato, un nicho y una restricción. El resultado no es una
-              idea perfecta: es una idea que puedes empezar hoy.
+              La IA cruza un formato y un nicho. El resultado no es una idea perfecta: es una idea
+              que puedes empezar hoy.
             </p>
             <span className="generator-tag">
               <Sparkle className="icon" />
@@ -114,13 +111,6 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
               label="NICHO"
               value={isRolling ? reel.theme : idea.theme.label}
               accent="coral"
-              rolling={isRolling}
-            />
-            <Slot
-              index="03"
-              label="RESTRICCIÓN"
-              value={isRolling ? reel.twist : idea.twist.label}
-              accent="violet"
               rolling={isRolling}
             />
           </div>

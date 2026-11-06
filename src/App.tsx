@@ -32,7 +32,7 @@ export default function App() {
 
     const finish = () => {
       setIdea(next)
-      add(seed)
+      add(next)
       setIsRolling(false)
       timeout.current = null
     }
@@ -63,13 +63,13 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [generate])
 
-  const openFromHistory = useCallback((seed: number) => {
+  const openFromHistory = useCallback((idea: Idea) => {
     if (timeout.current) {
       window.clearTimeout(timeout.current)
       timeout.current = null
     }
     setIsRolling(false)
-    setIdea(generateIdea(seed))
+    setIdea(idea)
     document.getElementById('generador')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [])
 

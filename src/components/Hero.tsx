@@ -1,4 +1,4 @@
-import { PROJECT_TYPES, STACKS, THEMES, TWISTS } from '../data/ideas'
+import { PROJECT_TYPES, THEMES } from '../data/ideas'
 import { difficultyLabel } from '../lib/generator'
 import type { Idea } from '../types'
 import { ArrowDown, ArrowRight, Sparkle } from './Icons'
@@ -9,7 +9,7 @@ type HeroProps = {
   onGenerate: () => void
 }
 
-const combinations = PROJECT_TYPES.length * THEMES.length * TWISTS.length * STACKS.length
+const combinations = PROJECT_TYPES.length * THEMES.length
 const combinationsLabel = new Intl.NumberFormat('es').format(combinations)
 
 export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
@@ -37,8 +37,8 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
           </h1>
 
           <p className="hero-sub">
-            Un formato, un nicho y una restricción al azar. La excusa perfecta para empezar tu
-            próxima landing, SaaS o experimento antes de que se te ocurra otra cosa.
+            Un formato y un nicho al azar, con la IA escribiendo el brief. La excusa perfecta para
+            empezar tu próxima landing, SaaS o experimento antes de que se te ocurra otra cosa.
           </p>
 
           <div className="hero-actions">
@@ -66,14 +66,6 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
               <dt>Nichos</dt>
               <dd>{THEMES.length}</dd>
             </div>
-            <div>
-              <dt>Twists</dt>
-              <dd>{TWISTS.length}</dd>
-            </div>
-            <div>
-              <dt>Stacks</dt>
-              <dd>{STACKS.length}</dd>
-            </div>
           </dl>
         </div>
 
@@ -93,14 +85,6 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
               <div>
                 <dt>TEMA</dt>
                 <dd>{isRolling ? '...' : idea.theme.label}</dd>
-              </div>
-              <div>
-                <dt>RESTRICCIÓN</dt>
-                <dd>{isRolling ? '...' : idea.twist.label}</dd>
-              </div>
-              <div>
-                <dt>STACK</dt>
-                <dd>{isRolling ? '...' : idea.stack.label}</dd>
               </div>
               <div>
                 <dt>NIVEL</dt>

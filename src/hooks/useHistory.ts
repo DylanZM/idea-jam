@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react'
-import type { HistoryEntry } from '../types'
+import type { HistoryEntry, Idea } from '../types'
 import { addHistoryEntry, clearHistory, loadHistory } from '../lib/storage'
 
 export function useHistory() {
   const [entries, setEntries] = useState<HistoryEntry[]>(() => loadHistory())
 
-  const add = useCallback((seed: number) => {
-    setEntries((current) => addHistoryEntry(current, seed))
+  const add = useCallback((idea: Idea) => {
+    setEntries((current) => addHistoryEntry(current, idea))
   }, [])
 
   const clear = useCallback(() => {

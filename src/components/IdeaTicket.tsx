@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { difficultyLabel } from '../lib/generator'
 import type { Idea } from '../types'
 import { Check, Copy } from './Icons'
@@ -20,8 +20,6 @@ function buildBrief(idea: Idea): string {
     '',
     `TIPO: ${idea.type.label}`,
     `TEMA: ${idea.theme.label}`,
-    `TWIST: ${idea.twist.label}`,
-    `STACK: ${idea.stack.label} (${idea.stack.detail})`,
     `DIFICULTAD: ${difficultyLabel(idea.difficulty)}`,
     '',
     'QUÉ TIENE QUE TENER',
@@ -84,14 +82,6 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
         <div>
           <dt>Tema</dt>
           <dd>{idea.theme.label}</dd>
-        </div>
-        <div>
-          <dt>Twist</dt>
-          <dd>{idea.twist.label}</dd>
-        </div>
-        <div>
-          <dt>Stack</dt>
-          <dd>{idea.stack.label}</dd>
         </div>
         <div>
           <dt>Nivel</dt>

@@ -1,4 +1,4 @@
-import type { ProjectType, Stack, Theme, Twist } from '../types'
+import type { ProjectType, Theme } from '../types'
 
 export const PROJECT_TYPES: ProjectType[] = [
   {
@@ -14,10 +14,10 @@ export const PROJECT_TYPES: ProjectType[] = [
       '{Theme} en estado puro',
     ],
     pitches: [
-      'Una landing para {theme} que convierte sin ruido. La restricción: {twist}.',
-      'Una sola página para presentar {theme} y llevar a la acción. La restricción: {twist}.',
-      'Una landing editorial para {theme}, con foco en claridad y velocidad. La restricción: {twist}.',
-      'La primera impresión digital de un proyecto de {theme}. La restricción: {twist}.',
+      'Una landing para {theme} que convierte sin ruido.',
+      'Una sola página para presentar {theme} y llevar a la acción.',
+      'Una landing editorial para {theme}, con foco en claridad y velocidad.',
+      'La primera impresión digital de un proyecto de {theme}.',
     ],
     features: [
       'Hero con titular gigante y una única llamada a la acción.',
@@ -42,9 +42,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'La navaja suiza de {theme}',
     ],
     pitches: [
-      'Un micro-SaaS que resuelve una molestia concreta de {theme}. La restricción: {twist}.',
-      'Una herramienta de suscripción para gente de {theme} que quiere hacer una cosa muy bien. La restricción: {twist}.',
-      'Un producto pequeño con una promesa clara para profesionales de {theme}. La restricción: {twist}.',
+      'Un micro-SaaS que resuelve una molestia concreta de {theme}.',
+      'Una herramienta de suscripción para gente de {theme} que quiere hacer una cosa muy bien.',
+      'Un producto pequeño con una promesa clara para profesionales de {theme}.',
     ],
     features: [
       'Onboarding de tres pasos con un primer resultado visible.',
@@ -69,9 +69,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'Casos de {theme}',
     ],
     pitches: [
-      'Un portfolio editorial para mostrar trabajo de {theme}. La restricción: {twist}.',
-      'Una web de estudio con casos, proceso y contacto rápido para clientes de {theme}. La restricción: {twist}.',
-      'Un archivo personal de proyectos de {theme}, ordenado para leerse en dos minutos. La restricción: {twist}.',
+      'Un portfolio editorial para mostrar trabajo de {theme}.',
+      'Una web de estudio con casos, proceso y contacto rápido para clientes de {theme}.',
+      'Un archivo personal de proyectos de {theme}, ordenado para leerse en dos minutos.',
     ],
     features: [
       'Casos de estudio con problema, proceso y resultado.',
@@ -95,9 +95,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'El catálogo definitivo de {theme}',
     ],
     pitches: [
-      'Una tienda pequeña y afilada para {theme}. La restricción: {twist}.',
-      'Un e-commerce de catálogo corto y checkout sin fricción para {theme}. La restricción: {twist}.',
-      'Una tienda editorial que trata {theme} como una marca, no como un inventario. La restricción: {twist}.',
+      'Una tienda pequeña y afilada para {theme}.',
+      'Un e-commerce de catálogo corto y checkout sin fricción para {theme}.',
+      'Una tienda editorial que trata {theme} como una marca, no como un inventario.',
     ],
     features: [
       'Catálogo con filtros por categoría, precio y disponibilidad.',
@@ -121,9 +121,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'Crónicas de {theme}',
     ],
     pitches: [
-      'Una publicación independiente sobre {theme}, pensada para leer despacio. La restricción: {twist}.',
-      'Una revista digital de {theme} con artículos, ensayos y una portada que cambia cada semana. La restricción: {twist}.',
-      'Un blog de autor sobre {theme}, sin popups ni distracciones. La restricción: {twist}.',
+      'Una publicación independiente sobre {theme}, pensada para leer despacio.',
+      'Una revista digital de {theme} con artículos, ensayos y una portada que cambia cada semana.',
+      'Un blog de autor sobre {theme}, sin popups ni distracciones.',
     ],
     features: [
       'Portada editorial con un artículo destacado.',
@@ -147,9 +147,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'La versión jugable de {theme}',
     ],
     pitches: [
-      'Un juego de navegador con {theme} como excusa. La restricción: {twist}.',
-      'Un arcade pequeño y adictivo sobre {theme}, con una sola mecánica. La restricción: {twist}.',
-      'Un juego experimental que convierte {theme} en un sistema de reglas. La restricción: {twist}.',
+      'Un juego de navegador con {theme} como excusa.',
+      'Un arcade pequeño y adictivo sobre {theme}, con una sola mecánica.',
+      'Un juego experimental que convierte {theme} en un sistema de reglas.',
     ],
     features: [
       'Bucle de juego claro: objetivo, intento y recompensa.',
@@ -173,9 +173,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'El utensilio digital de {theme}',
     ],
     pitches: [
-      'Una utilidad de una sola tarea para gente de {theme}. La restricción: {twist}.',
-      'Una herramienta que quita un paso repetitivo del trabajo con {theme}. La restricción: {twist}.',
-      'Un utensilio web pequeño, rápido y sin cuenta para {theme}. La restricción: {twist}.',
+      'Una utilidad de una sola tarea para gente de {theme}.',
+      'Una herramienta que quita un paso repetitivo del trabajo con {theme}.',
+      'Un utensilio web pequeño, rápido y sin cuenta para {theme}.',
     ],
     features: [
       'Una acción principal imposible de confundir.',
@@ -199,9 +199,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'El radar de {theme}',
     ],
     pitches: [
-      'Un panel que convierte {theme} en algo que se puede leer de un vistazo. La restricción: {twist}.',
-      'Un dashboard para seguir el pulso de {theme} sin abrir cinco pestañas. La restricción: {twist}.',
-      'Una interfaz de datos para tomar decisiones sobre {theme} en segundos. La restricción: {twist}.',
+      'Un panel que convierte {theme} en algo que se puede leer de un vistazo.',
+      'Un dashboard para seguir el pulso de {theme} sin abrir cinco pestañas.',
+      'Una interfaz de datos para tomar decisiones sobre {theme} en segundos.',
     ],
     features: [
       'Vista general con tres métricas principales.',
@@ -225,9 +225,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'El foro de {theme}',
     ],
     pitches: [
-      'Un espacio para que la gente de {theme} compare, pregunte y muestre. La restricción: {twist}.',
-      'Una comunidad pequeña y moderada para aficionados a {theme}. La restricción: {twist}.',
-      'Un foro ligero con perfiles, hilos y etiquetas para {theme}. La restricción: {twist}.',
+      'Un espacio para que la gente de {theme} compare, pregunte y muestre.',
+      'Una comunidad pequeña y moderada para aficionados a {theme}.',
+      'Un foro ligero con perfiles, hilos y etiquetas para {theme}.',
     ],
     features: [
       'Perfiles con reputación y contribuciones.',
@@ -251,9 +251,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'La rutina de {theme}',
     ],
     pitches: [
-      'Un tracker para practicar {theme} sin culpa. La restricción: {twist}.',
-      'Una app mínima para convertir {theme} en una racha pequeña y sostenible. La restricción: {twist}.',
-      'Un diario de progreso para gente que empieza con {theme}. La restricción: {twist}.',
+      'Un tracker para practicar {theme} sin culpa.',
+      'Una app mínima para convertir {theme} en una racha pequeña y sostenible.',
+      'Un diario de progreso para gente que empieza con {theme}.',
     ],
     features: [
       'Registro de un toque y racha visible.',
@@ -277,9 +277,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'Un juguete visual sobre {theme}',
     ],
     pitches: [
-      'Un juguete web que explora {theme} de forma rara y visual. La restricción: {twist}.',
-      'Un experimento interactivo donde {theme} se convierte en sistema, textura o sonido. La restricción: {twist}.',
-      'Una pieza de navegador sobre {theme} que se entiende jugando. La restricción: {twist}.',
+      'Un juguete web que explora {theme} de forma rara y visual.',
+      'Un experimento interactivo donde {theme} se convierte en sistema, textura o sonido.',
+      'Una pieza de navegador sobre {theme} que se entiende jugando.',
     ],
     features: [
       'Una interacción central que se descubre sola.',
@@ -303,9 +303,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'El asistente de {theme} en el navegador',
     ],
     pitches: [
-      'Una extensión que mete {theme} en el navegador. La restricción: {twist}.',
-      'Una extensión pequeña que mejora una página concreta para gente de {theme}. La restricción: {twist}.',
-      'Un popup y un content script que resuelven una tarea de {theme} en un clic. La restricción: {twist}.',
+      'Una extensión que mete {theme} en el navegador.',
+      'Una extensión pequeña que mejora una página concreta para gente de {theme}.',
+      'Un popup y un content script que resuelven una tarea de {theme} en un clic.',
     ],
     features: [
       'Popup con una acción principal y ajustes mínimos.',
@@ -329,9 +329,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'El mapa de {theme}',
     ],
     pitches: [
-      'Un directorio curado de {theme}, con búsqueda y filtros. La restricción: {twist}.',
-      'Una guía navegable de recursos, personas y lugares de {theme}. La restricción: {twist}.',
-      'Un índice editorial de {theme}, actualizado a mano. La restricción: {twist}.',
+      'Un directorio curado de {theme}, con búsqueda y filtros.',
+      'Una guía navegable de recursos, personas y lugares de {theme}.',
+      'Un índice editorial de {theme}, actualizado a mano.',
     ],
     features: [
       'Búsqueda instantánea por nombre y etiqueta.',
@@ -355,9 +355,9 @@ export const PROJECT_TYPES: ProjectType[] = [
       'El manual de {theme}',
     ],
     pitches: [
-      'Una base de conocimiento abierta sobre {theme}. La restricción: {twist}.',
-      'Una wiki pequeña y bien ordenada para aprender {theme} desde cero. La restricción: {twist}.',
-      'Un manual colaborativo de {theme}, con ejemplos y referencias. La restricción: {twist}.',
+      'Una base de conocimiento abierta sobre {theme}.',
+      'Una wiki pequeña y bien ordenada para aprender {theme} desde cero.',
+      'Un manual colaborativo de {theme}, con ejemplos y referencias.',
     ],
     features: [
       'Búsqueda con resultados por sección.',
@@ -413,152 +413,6 @@ export const THEMES: Theme[] = [
   { id: 'cartas', label: 'coleccionismo de cartas' },
   { id: 'idiomas', label: 'idiomas inventados' },
   { id: 'sueno', label: 'rutinas de sueño' },
-]
-
-export const TWISTS: Twist[] = [
-  {
-    id: 'sin-imagenes',
-    label: 'sin una sola imagen',
-    feature: 'Cero fotos: tipografía, color y datos cargan con todo el peso visual.',
-  },
-  {
-    id: 'solo-tipografia',
-    label: 'solo tipografía',
-    feature: 'La tipografía es la interfaz: escalas, ritmo y contraste hacen todo el trabajo.',
-  },
-  {
-    id: 'una-pantalla',
-    label: 'una única pantalla',
-    feature: 'Todo ocurre sin cambiar de página: una sola vista y estados que se transforman.',
-  },
-  {
-    id: 'offline',
-    label: 'funciona offline',
-    feature: 'La experiencia principal sigue viva sin conexión y avisa cuando vuelve la red.',
-  },
-  {
-    id: 'sin-scroll',
-    label: 'sin scroll',
-    feature: 'Navegación por pasos o paneles: el scroll no es la única forma de avanzar.',
-  },
-  {
-    id: 'sonido',
-    label: 'con sonido generado',
-    feature: 'Sonido sintetizado en el navegador, apagado por defecto y con control visible.',
-  },
-  {
-    id: 'tres-colores',
-    label: 'solo tres colores',
-    feature: 'Paleta cerrada de tres colores; toda la jerarquía sale de contraste y escala.',
-  },
-  {
-    id: 'dark-first',
-    label: 'modo oscuro por defecto',
-    feature: 'Diseñada primero en oscuro, con un modo claro que no es una inversión automática.',
-  },
-  {
-    id: 'tiempo-real',
-    label: 'datos en tiempo real',
-    feature: 'Los números se actualizan solos y muestran cuándo fue la última lectura.',
-  },
-  {
-    id: 'datos-abiertos',
-    label: 'con datos abiertos',
-    feature: 'Todo se apoya en un dataset público, con fuente y fecha visibles.',
-  },
-  {
-    id: 'gamificada',
-    label: 'gamificada de principio a fin',
-    feature: 'Progreso, logros y recompensas convierten cada visita en una partida corta.',
-  },
-  {
-    id: 'accesible',
-    label: 'accesible nivel AAA',
-    feature: 'Contraste, foco, teclado y lectores de pantalla tratados como requisito, no extra.',
-  },
-  {
-    id: 'mobile-first',
-    label: 'pensada primero para móvil',
-    feature: 'La versión de bolsillo es la principal; el desktop es una ampliación, no al revés.',
-  },
-  {
-    id: 'sin-js',
-    label: 'sin JavaScript en el cliente',
-    feature: 'Todo funciona con HTML y CSS; el JS solo aparece si de verdad aporta.',
-  },
-  {
-    id: 'generativa',
-    label: 'arte generativo en cada visita',
-    feature: 'Cada visita produce una composición distinta a partir de una semilla compartible.',
-  },
-  {
-    id: 'colaborativa',
-    label: 'colaborativa y en vivo',
-    feature: 'Varias personas pueden aportar a la vez y ver los cambios sin recargar.',
-  },
-  {
-    id: 'ia',
-    label: 'asistida por IA',
-    feature: 'La IA propone, el usuario decide: siempre hay una forma de editar o rechazar.',
-  },
-  {
-    id: 'low-tech',
-    label: 'low-tech y deliberadamente lenta',
-    feature: 'Sin urgencia: transiciones pausadas y una interfaz que invita a quedarse.',
-  },
-  {
-    id: 'imprimible',
-    label: 'imprimible en papel',
-    feature: 'Una hoja de estilos de impresión convierte la web en una ficha usable en papel.',
-  },
-  {
-    id: '8bit',
-    label: 'estética 8-bit',
-    feature: 'Sprites, tipografía pixel y sonido de consola, con legibilidad por encima de la nostalgia.',
-  },
-  {
-    id: 'sin-formularios',
-    label: 'sin formularios',
-    feature: 'Cero campos obligatorios: la acción ocurre con un clic o un enlace.',
-  },
-  {
-    id: 'teclado',
-    label: 'con navegación por teclado',
-    feature: 'Todo se puede hacer con teclado, con atajos visibles y foco que nunca se pierde.',
-  },
-  {
-    id: 'un-acento',
-    label: 'un solo color de acento',
-    feature: 'Un único acento saturado sobre una base neutra; el resto es jerarquía y espacio.',
-  },
-  {
-    id: 'urls',
-    label: 'basada en URLs compartibles',
-    feature: 'Cada estado importante tiene su propia URL y se puede pegar en cualquier chat.',
-  },
-  {
-    id: 'lectura',
-    label: 'con modo lectura',
-    feature: 'Un modo lectura limpia el ruido y recuerda dónde te quedaste.',
-  },
-  {
-    id: 'nativo',
-    label: 'usando solo componentes nativos',
-    feature: 'Sin librerías de UI: elementos nativos bien estilizados y comportamiento del navegador.',
-  },
-]
-
-export const STACKS: Stack[] = [
-  { id: 'vanilla', label: 'HTML + CSS + JS', detail: 'sin build, cero dependencias', difficulty: 1 },
-  { id: 'astro', label: 'Astro + CSS', detail: 'contenido primero, islas puntuales', difficulty: 1 },
-  { id: 'react', label: 'React + Vite', detail: 'componentes y estado local', difficulty: 2 },
-  { id: 'svelte', label: 'SvelteKit', detail: 'poco código, mucha reactividad', difficulty: 2 },
-  { id: 'vue', label: 'Vue + Nuxt', detail: 'rutas y composables', difficulty: 2 },
-  { id: 'remix', label: 'Remix', detail: 'datos en el servidor y formularios', difficulty: 2 },
-  { id: 'next', label: 'Next.js + API', detail: 'full-stack en un solo repo', difficulty: 3 },
-  { id: 'canvas', label: 'Vanilla + Canvas', detail: 'render propio a 60 fps', difficulty: 3 },
-  { id: 'three', label: 'Three.js', detail: 'escena 3D en el navegador', difficulty: 3 },
-  { id: 'svg', label: 'Svelte + SVG', detail: 'animación vectorial ligera', difficulty: 1 },
 ]
 
 export const GENERIC_FEATURES = [
