@@ -59,7 +59,6 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
 
   useEffect(() => {
     if (!isRolling) return
-    setReel(randomReel())
     const interval = window.setInterval(() => setReel(randomReel()), 80)
     return () => window.clearInterval(interval)
   }, [isRolling])
@@ -128,7 +127,7 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
 
           <div className="machine-controls">
             <button
-              className="btn btn-lime btn-xl generate-btn js-generate"
+              className="btn btn-orange btn-xl generate-btn js-generate"
               type="button"
               onClick={onGenerate}
               disabled={isRolling}
@@ -145,7 +144,7 @@ export function Generator({ idea, isRolling, onGenerate }: GeneratorProps) {
           <piix-pal pal="pip" on=".js-generate" scale="3" />
         </div>
 
-        <IdeaTicket idea={idea} isRolling={isRolling} />
+        <IdeaTicket idea={idea} isRolling={isRolling} key={idea.seed} />
       </div>
     </section>
   )

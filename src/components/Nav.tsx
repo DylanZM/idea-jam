@@ -19,7 +19,7 @@ export function Nav() {
           <a href="#como-funciona">Cómo funciona</a>
         </nav>
 
-        <a className="btn btn-ink btn-sm nav-cta" href="#generador">
+        <a className="btn btn-blue btn-sm nav-cta" href="#generador">
           GENERAR
           <ArrowDown className="icon" />
         </a>

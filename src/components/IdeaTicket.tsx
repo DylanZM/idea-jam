@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { difficultyLabel } from '../lib/generator'
 import type { Idea } from '../types'
 import { Check, Copy } from './Icons'
@@ -38,10 +38,6 @@ export function IdeaTicket({ idea, isRolling }: IdeaTicketProps) {
       if (timeout.current) window.clearTimeout(timeout.current)
     }
   }, [])
-
-  useEffect(() => {
-    setCopyState('idle')
-  }, [idea.seed])
 
   const handleCopy = async () => {
     try {

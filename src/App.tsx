@@ -89,11 +89,15 @@ export default function App() {
       <main>
         <Hero idea={idea} isRolling={isRolling} onGenerate={generate} />
 
-        <div className="divider-band" aria-hidden>
-          <piix-divider kind="wave" from="#f3eee3" to="#17121f" />
+        <div className="divider-band divider-to-blue" aria-hidden>
+          <piix-divider kind="wave" from="#ecebe6" to="#1f3cff" />
         </div>
 
         <Ticker />
+
+        <div className="divider-band divider-from-blue" aria-hidden>
+          <piix-divider kind="wave" from="#1f3cff" to="#ecebe6" />
+        </div>
 
         <Generator idea={idea} isRolling={isRolling} onGenerate={generate} />
         <History entries={entries} onOpen={openFromHistory} onClear={clear} />

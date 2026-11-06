@@ -34,7 +34,6 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
             qué
             <br />
             <mark>construir.</mark>
-            <piix-pal pal="bitbug" scale="3" />
           </h1>
 
           <p className="hero-sub">
@@ -79,10 +78,6 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
         </div>
 
         <div className="brief-wrap">
-          <span className="brief-slip" aria-hidden>
-            OPEN CALL / IDEA RANDOM / 24H
-          </span>
-
           <article className={`brief${isRolling ? ' brief-busy' : ''}`}>
             <header className="brief-top">
               <span>PROJECT BRIEF</span>
@@ -131,10 +126,7 @@ export function Hero({ idea, isRolling, onGenerate }: HeroProps) {
             </span>
 
             <piix-sprite name="mochi" size="76" className="brief-sprite" />
-            <piix-pal pal="moss" scale="3" at="0.86" />
           </article>
-
-          <piix-sprite name="dice" size="64" className="brief-dice" />
         </div>
       </div>
     </section>

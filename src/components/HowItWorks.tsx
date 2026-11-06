@@ -3,7 +3,7 @@ const steps = [
     number: '01',
     title: 'Abre el generador',
     text: 'No hay configuración, cuenta ni onboarding. Solo un botón y muchas posibilidades.',
-    sprite: 'moss',
+    sprite: 'mochi',
     accent: 'lime',
   },
   {
@@ -28,7 +28,7 @@ export function HowItWorks() {
       <div className="container">
         <div className="section-head how-head">
           <div>
-            <span className="eyebrow">// CÓMO FUNCIONA</span>
+            <span className="eyebrow">04 / CÓMO FUNCIONA</span>
             <h2>
               Tres pasos.
               <br />

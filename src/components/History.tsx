@@ -38,7 +38,7 @@ export function History({ entries, onOpen, onClear }: HistoryProps) {
       <div className="container">
         <div className="section-head history-head">
           <div>
-            <span className="eyebrow">// TU ARCHIVO</span>
+            <span className="eyebrow">03 / TU ARCHIVO</span>
             <h2>
               Historial.
               <span className="history-count">{entries.length}/10</span>
@@ -68,7 +68,7 @@ export function History({ entries, onOpen, onClear }: HistoryProps) {
               <h3>El historial está en blanco.</h3>
               <p>Genera la primera idea y aparecerá aquí, lista para volver a abrirla.</p>
             </div>
-            <a className="btn btn-lime" href="#generador">
+            <a className="btn btn-orange" href="#generador">
               IR AL GENERADOR
               <ArrowUpRight className="icon" />
             </a>

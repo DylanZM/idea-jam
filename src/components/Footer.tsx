@@ -10,7 +10,7 @@ export function Footer({ onGenerate }: FooterProps) {
       <div className="footer-cta">
         <div className="container footer-cta-inner">
           <div>
-            <span className="eyebrow eyebrow-invert">// ÚLTIMA LLAMADA</span>
+            <span className="eyebrow eyebrow-invert">05 / ÚLTIMA LLAMADA</span>
             <h2>
               DALE.
               <br />
@@ -25,7 +25,7 @@ export function Footer({ onGenerate }: FooterProps) {
               <br />
               Lo difícil ya lo estás haciendo.
             </p>
-            <button className="btn btn-lime btn-lg" type="button" onClick={onGenerate}>
+            <button className="btn btn-orange btn-lg" type="button" onClick={onGenerate}>
               GENERAR IDEA
               <ArrowUpRight className="icon" />
             </button>
