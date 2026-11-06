@@ -30,23 +30,17 @@ export type Messages = {
     statGenerationValue: string
     statTemplates: string
     statTemplatesValue: string
-    briefTop: string
-    briefNo: string
-    briefFormat: string
-    briefNiche: string
-    briefLevel: string
-    briefThinkingType: string
-    briefTranslatingType: string
-    briefIdleType: string
-    briefIdleTitle: string
-    briefIdleText: string
-    briefIdleNiche: string
-    briefIdleLevel: string
-    briefIdleNote: string
-    briefStamp: string
-    briefSticker: string
-    seed: string
-    viewBrief: string
+    posterTop: string
+    posterEdition: string
+    posterKicker: string
+    posterTitle1: string
+    posterTitle2: string
+    posterTitle3: string
+    posterText: string
+    posterSteps: Array<{ title: string; text: string }>
+    posterFooter: string
+    posterKey: string
+    posterSticker: string
   }
   generator: {
     eyebrow: string
@@ -78,13 +72,11 @@ export type Messages = {
     thinking: string[]
   }
   ticket: {
-    code: string
     brief: string
     proposal: string
     metaNiche: string
     metaLevel: string
     featuresHeading: string
-    seed: string
     copy: string
     copied: string
     copyError: string
@@ -168,23 +160,22 @@ const es: Messages = {
     statGenerationValue: 'IA',
     statTemplates: 'Plantillas',
     statTemplatesValue: '0',
-    briefTop: 'AI BRIEF',
-    briefNo: 'Nº',
-    briefFormat: 'FORMATO',
-    briefNiche: 'NICHO',
-    briefLevel: 'NIVEL',
-    briefThinkingType: 'PENSANDO…',
-    briefTranslatingType: 'TRADUCIENDO…',
-    briefIdleType: 'TU IDEA',
-    briefIdleTitle: 'El brief aparecerá aquí',
-    briefIdleText: 'Pulsa generar y la IA rellenará el formato, el nicho y los requisitos.',
-    briefIdleNiche: 'Por descubrir',
-    briefIdleLevel: 'Por definir',
-    briefIdleNote: 'LISTO CUANDO TÚ QUIERAS',
-    briefStamp: 'NO HAY EXCUSAS',
-    briefSticker: 'IA',
-    seed: 'SEED',
-    viewBrief: 'Ver brief completo',
+    posterTop: 'MÉTODO IDEA JAM',
+    posterEdition: 'ED. 2026',
+    posterKicker: 'DE LA PÁGINA EN BLANCO AL BRIEF',
+    posterTitle1: 'ROBA.',
+    posterTitle2: 'MEZCLA.',
+    posterTitle3: 'PUBLICA.',
+    posterText:
+      'No necesitas una idea perfecta. Necesitas un formato, un nicho y una excusa para empezar.',
+    posterSteps: [
+      { title: 'Elige un formato', text: 'Landing, micro-SaaS, juego o experimento web.' },
+      { title: 'Encuentra un nicho', text: 'Algo específico, raro y con ganas de existir.' },
+      { title: 'Llévate el brief', text: 'Título, descripción y requisitos listos para construir.' },
+    ],
+    posterFooter: 'UN CLIC / CERO PÁGINAS EN BLANCO',
+    posterKey: 'G',
+    posterSticker: 'EMPIEZA AQUÍ',
   },
   generator: {
     eyebrow: '02 / EL GENERADOR',
@@ -217,13 +208,11 @@ const es: Messages = {
     thinking: ['Analizando el brief', 'Cruzando señales', 'Escribiendo la idea', 'Puliendo requisitos'],
   },
   ticket: {
-    code: 'IDEA',
     brief: 'BRIEF',
     proposal: 'PROPUESTA',
     metaNiche: 'Nicho',
     metaLevel: 'Nivel',
     featuresHeading: 'Lo que tiene que tener',
-    seed: 'SEED',
     copy: 'Copiar brief',
     copied: 'Copiado',
     copyError: 'No se pudo',
@@ -240,7 +229,7 @@ const es: Messages = {
     eyebrow: '03 / TU ARCHIVO',
     title: 'Historial.',
     intro:
-      'Tus últimas diez ideas quedan guardadas en este navegador. Sin cuenta, sin nube, sin excusas para no volver.',
+      'Tus ideas quedan guardadas en este navegador. Sin cuenta, sin nube, sin excusas para no volver.',
     clear: 'Vaciar',
     confirm: '¿Seguro?',
     emptyTitle: 'El historial está en blanco.',
@@ -336,23 +325,22 @@ const en: Messages = {
     statGenerationValue: 'AI',
     statTemplates: 'Templates',
     statTemplatesValue: '0',
-    briefTop: 'AI BRIEF',
-    briefNo: 'No.',
-    briefFormat: 'FORMAT',
-    briefNiche: 'NICHE',
-    briefLevel: 'LEVEL',
-    briefThinkingType: 'THINKING…',
-    briefTranslatingType: 'TRANSLATING…',
-    briefIdleType: 'YOUR IDEA',
-    briefIdleTitle: 'Your brief will appear here',
-    briefIdleText: 'Hit generate and AI will fill in the format, the niche and the requirements.',
-    briefIdleNiche: 'To discover',
-    briefIdleLevel: 'To define',
-    briefIdleNote: 'READY WHEN YOU ARE',
-    briefStamp: 'NO EXCUSES',
-    briefSticker: 'AI',
-    seed: 'SEED',
-    viewBrief: 'View full brief',
+    posterTop: 'THE IDEA JAM METHOD',
+    posterEdition: 'EST. 2026',
+    posterKicker: 'FROM BLANK PAGE TO BRIEF',
+    posterTitle1: 'STEAL.',
+    posterTitle2: 'MIX.',
+    posterTitle3: 'SHIP.',
+    posterText:
+      'You do not need a perfect idea. You need a format, a niche and an excuse to start.',
+    posterSteps: [
+      { title: 'Pick a format', text: 'Landing page, micro-SaaS, game or web experiment.' },
+      { title: 'Find a niche', text: 'Something specific, strange and ready to exist.' },
+      { title: 'Take the brief', text: 'Title, description and requirements ready to build.' },
+    ],
+    posterFooter: 'ONE CLICK / ZERO BLANK PAGES',
+    posterKey: 'G',
+    posterSticker: 'START HERE',
   },
   generator: {
     eyebrow: '02 / THE GENERATOR',
@@ -385,13 +373,11 @@ const en: Messages = {
     thinking: ['Reading the brief', 'Crossing signals', 'Writing the idea', 'Polishing requirements'],
   },
   ticket: {
-    code: 'IDEA',
     brief: 'BRIEF',
     proposal: 'PROPOSAL',
     metaNiche: 'Niche',
     metaLevel: 'Level',
     featuresHeading: 'What it must have',
-    seed: 'SEED',
     copy: 'Copy brief',
     copied: 'Copied',
     copyError: 'Could not copy',
@@ -408,7 +394,7 @@ const en: Messages = {
     eyebrow: '03 / YOUR ARCHIVE',
     title: 'History.',
     intro:
-      'Your last ten ideas stay in this browser. No account, no cloud, no excuse not to come back.',
+      'Your ideas stay in this browser. No account, no cloud, no excuse not to come back.',
     clear: 'Clear',
     confirm: 'Sure?',
     emptyTitle: 'Your history is empty.',

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useI18n } from '../i18n'
 import { timeAgo } from '../lib/format'
-import { HISTORY_LIMIT } from '../lib/storage'
 import type { HistoryEntry, Idea } from '../types'
 import { ArrowUpRight, Trash } from './Icons'
 
@@ -36,12 +35,7 @@ export function History({ entries, onOpen, onClear }: HistoryProps) {
         <div className="section-head history-head">
           <div>
             <span className="eyebrow">{messages.history.eyebrow}</span>
-            <h2>
-              {messages.history.title}
-              <span className="history-count">
-                {entries.length}/{HISTORY_LIMIT}
-              </span>
-            </h2>
+            <h2>{messages.history.title}</h2>
           </div>
           <div className="history-head-right">
             <p>{messages.history.intro}</p>

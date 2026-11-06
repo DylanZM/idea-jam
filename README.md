@@ -12,7 +12,7 @@ A random topic generator for your next landing page, SaaS, game or web experimen
 - Animated roll with the `G` keyboard shortcut.
 - Local anti-abuse limit: 5 ideas per minute, 100 per day and 5 s between rolls.
 - Button to copy the brief as text.
-- History of the last 10 complete ideas in `localStorage`.
+- Complete idea history in `localStorage`, with no cap.
 - Responsive neo-brutalist design with animated icons, no account or backend.
 
 ## Stack
@@ -34,7 +34,7 @@ cp .env.example .env
 
 ```env
 AI_PROVIDER_API_KEY=your_api_key
-AI_PROVIDER_MODEL=gemini-3.1-flash-lite
+AI_PROVIDER_MODEL=yor_model
 ```
 
 The app calls Gemini directly from the browser, so the key is included in the client bundle. Use this only locally or in a private deployment. If the key is missing or the request fails, the app shows an error and keeps the last generated idea.

@@ -1,18 +1,12 @@
 import { useI18n } from '../i18n'
-import type { Idea } from '../types'
 import { ArrowDown, ArrowRight, Sparkle } from './Icons'
 
 type HeroProps = {
-  idea: Idea | null
-  isRolling: boolean
-  isTranslating: boolean
   onGenerate: () => void
 }
 
-export function Hero({ idea, isRolling, isTranslating, onGenerate }: HeroProps) {
+export function Hero({ onGenerate }: HeroProps) {
   const { messages } = useI18n()
-  const isBusy = isRolling || isTranslating
-  const stateClass = isBusy ? ' brief-busy' : idea ? '' : ' brief-idle'
 
   return (
     <section className="hero" id="top">
@@ -68,87 +62,46 @@ export function Hero({ idea, isRolling, isTranslating, onGenerate }: HeroProps) 
           </dl>
         </div>
 
-        <div className="brief-wrap">
-          <article className={`brief${stateClass}`}>
-            <header className="brief-top">
-              <span>{messages.hero.briefTop}</span>
-              <span>
-                {messages.hero.briefNo} {idea?.id ?? '—'}
-              </span>
+        <div className="poster-wrap">
+          <article className="poster">
+            <header className="poster-top">
+              <span>{messages.hero.posterTop}</span>
+              <span>{messages.hero.posterEdition}</span>
             </header>
 
-            <div className="brief-type">
-              <span className="brief-type-label">{messages.hero.briefFormat}</span>
-              <strong>
-                {isRolling
-                  ? messages.hero.briefThinkingType
-                  : isTranslating
-                    ? messages.hero.briefTranslatingType
-                    : idea
-                      ? idea.type
-                      : messages.hero.briefIdleType}
-              </strong>
+            <div className="poster-hero">
+              <span className="poster-kicker">{messages.hero.posterKicker}</span>
+              <h2 className="poster-title">
+                <span>{messages.hero.posterTitle1}</span>
+                <span className="poster-title-accent">{messages.hero.posterTitle2}</span>
+                <span className="poster-title-lime">{messages.hero.posterTitle3}</span>
+              </h2>
+              <p>{messages.hero.posterText}</p>
             </div>
 
-            <dl className="brief-fields">
-              <div>
-                <dt>{messages.hero.briefNiche}</dt>
-                <dd>{idea && !isRolling ? idea.theme : messages.hero.briefIdleNiche}</dd>
-              </div>
-              <div>
-                <dt>{messages.hero.briefLevel}</dt>
-                <dd>{idea && !isRolling ? messages.difficulty[idea.difficulty] : messages.hero.briefIdleLevel}</dd>
-              </div>
-            </dl>
+            <ol className="poster-steps">
+              {messages.hero.posterSteps.map((step, index) => (
+                <li key={step.title}>
+                  <span className="poster-step-index">{String(index + 1).padStart(2, '0')}</span>
+                  <div>
+                    <strong>{step.title}</strong>
+                    <p>{step.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
 
-            <div className="brief-body">
-              {isBusy ? (
-                <div className="brief-skeleton" aria-hidden={!isTranslating}>
-                  <span className="skeleton-line" />
-                  <span className="skeleton-line" />
-                  <span className="skeleton-line skeleton-line-short" />
-                  {isTranslating ? (
-                    <span className="brief-translating">{messages.ticket.translating}</span>
-                  ) : null}
-                </div>
-              ) : idea ? (
-                <>
-                  <strong>{idea.title}</strong>
-                  <p>{idea.description}</p>
-                  <a className="brief-view" href="#idea-result">
-                    {messages.hero.viewBrief}
-                    <ArrowRight className="icon" />
-                  </a>
-                </>
-              ) : (
-                <>
-                  <strong>{messages.hero.briefIdleTitle}</strong>
-                  <p>{messages.hero.briefIdleText}</p>
-                  <span className="brief-idle-note">{messages.hero.briefIdleNote}</span>
-                </>
-              )}
-            </div>
-
-            <footer className="brief-foot">
-              <span className="brief-barcode" aria-hidden>
-                {Array.from({ length: 28 }, (_, index) => (
-                  <i key={index} />
-                ))}
-              </span>
-              <span className="brief-seed">
-                {messages.hero.seed} {idea ? idea.seed.toString(16).toUpperCase() : '—'}
-              </span>
+            <footer className="poster-foot">
+              <span className="poster-footer-note">{messages.hero.posterFooter}</span>
+              <span className="poster-key">{messages.hero.posterKey}</span>
             </footer>
 
-            <span className="brief-stamp" aria-hidden>
-              {messages.hero.briefStamp}
-            </span>
-            <span className="brief-sticker" aria-hidden>
+            <span className="poster-sticker" aria-hidden>
               <Sparkle className="icon" />
-              {messages.hero.briefSticker}
+              {messages.hero.posterSticker}
             </span>
 
-            <piix-sprite name="mochi" size="76" className="brief-sprite" />
+            <piix-sprite name="mochi" size="76" className="poster-sprite" />
           </article>
         </div>
       </div>

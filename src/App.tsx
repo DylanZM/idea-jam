@@ -163,21 +163,10 @@ export default function App() {
       <Nav />
 
       <main>
-        <Hero
-          idea={idea}
-          isRolling={isRolling}
-          isTranslating={isTranslating}
-          onGenerate={generate}
-        />
+        <Hero onGenerate={generate} />
 
-        <div className="divider-band divider-to-blue" aria-hidden>
-          <piix-divider kind="wave" from="#f4efe6" to="#2b3cff" />
-        </div>
-
-        <Ticker />
-
-        <div className="divider-band divider-from-blue" aria-hidden>
-          <piix-divider kind="wave" from="#2b3cff" to="#f4efe6" />
+        <div className="ticker-block">
+          <Ticker />
         </div>
 
         <Generator

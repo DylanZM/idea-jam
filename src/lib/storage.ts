@@ -1,7 +1,6 @@
 import type { HistoryEntry, Idea } from '../types'
 
 export const HISTORY_KEY = 'ideajam.history.v3'
-export const HISTORY_LIMIT = 10
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object'
@@ -49,7 +48,6 @@ export function loadHistory(): HistoryEntry[] {
       if (!isValidEntry(item) || seen.has(item.idea.seed)) continue
       seen.add(item.idea.seed)
       entries.push(item)
-      if (entries.length === HISTORY_LIMIT) break
     }
     return entries
   } catch {
@@ -59,17 +57,14 @@ export function loadHistory(): HistoryEntry[] {
 
 export function saveHistory(entries: HistoryEntry[]): void {
   try {
-    window.localStorage.setItem(HISTORY_KEY, JSON.stringify(entries.slice(0, HISTORY_LIMIT)))
+    window.localStorage.setItem(HISTORY_KEY, JSON.stringify(entries))
   } catch {
     // History is a nice-to-have: private mode or a full quota should not break the app.
   }
 }
 
 export function addHistoryEntry(entries: HistoryEntry[], idea: Idea): HistoryEntry[] {
-  const next = [
-    { idea, createdAt: Date.now() },
-    ...entries.filter((entry) => entry.idea.seed !== idea.seed),
-  ].slice(0, HISTORY_LIMIT)
+  const next = [{ idea, createdAt: Date.now() }, ...entries.filter((entry) => entry.idea.seed !== idea.seed)]
   saveHistory(next)
   return next
 }

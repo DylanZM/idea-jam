@@ -14,7 +14,7 @@ type CopyState = 'idle' | 'copied' | 'error'
 
 function buildBrief(idea: Idea, messages: Messages): string {
   return [
-    `IDEA JAM #${idea.id}`,
+    'IDEA JAM',
     '',
     idea.title,
     '',
@@ -45,7 +45,7 @@ export function IdeaTicket({ idea, isRolling, isTranslating }: IdeaTicketProps) 
       <article className="ticket ticket-loading" id="idea-result" aria-live="polite" aria-busy>
         <div className="ticket-perf" aria-hidden />
         <header className="ticket-head">
-          <span className="ticket-code">{messages.ticket.code} —</span>
+          <span className="ticket-label">{messages.ticket.proposal}</span>
           <span className="ticket-stamp" aria-hidden>
             {messages.ticket.brief}
           </span>
@@ -61,7 +61,6 @@ export function IdeaTicket({ idea, isRolling, isTranslating }: IdeaTicketProps) 
               <span className="skeleton-line skeleton-line-short" />
             </div>
           </div>
-          <div className="ticket-flap ticket-flap-ghost" aria-hidden />
         </div>
       </article>
     )
@@ -72,9 +71,7 @@ export function IdeaTicket({ idea, isRolling, isTranslating }: IdeaTicketProps) 
       <article className="ticket ticket-empty" id="idea-result">
         <div className="ticket-perf" aria-hidden />
         <header className="ticket-head">
-          <span className="ticket-code">
-            {messages.ticket.code} —
-          </span>
+          <span className="ticket-label">{messages.ticket.proposal}</span>
           <span className="ticket-stamp" aria-hidden>
             {messages.ticket.brief}
           </span>
@@ -113,9 +110,7 @@ export function IdeaTicket({ idea, isRolling, isTranslating }: IdeaTicketProps) 
       <div className="ticket-perf" aria-hidden />
 
       <header className="ticket-head">
-        <span className="ticket-code">
-          {messages.ticket.code} #{idea.id}
-        </span>
+        <span className="ticket-label">{messages.ticket.proposal}</span>
         <span className={`tag tag-${idea.accent}`}>{idea.type}</span>
         <span className="ticket-stamp" aria-hidden>
           {messages.ticket.brief}
@@ -129,11 +124,6 @@ export function IdeaTicket({ idea, isRolling, isTranslating }: IdeaTicketProps) 
           </span>
           <h3>{idea.title}</h3>
           <p className="ticket-pitch">{idea.description}</p>
-        </div>
-
-        <div className="ticket-flap" aria-hidden>
-          <piix-flap key={idea.id} text={`${messages.ticket.code} ${idea.id}`} length={9} />
-          <span className="ticket-flap-label">SPLIT-FLAP / IDEA ID</span>
         </div>
       </div>
 
@@ -170,14 +160,6 @@ export function IdeaTicket({ idea, isRolling, isTranslating }: IdeaTicketProps) 
       </div>
 
       <footer className="ticket-foot">
-        <span className="ticket-seed">
-          {messages.ticket.seed} {idea.seed.toString(16).toUpperCase()}
-        </span>
-        <span className="ticket-barcode" aria-hidden>
-          {Array.from({ length: 22 }, (_, index) => (
-            <i key={index} />
-          ))}
-        </span>
         <button className="btn btn-ink btn-sm" type="button" onClick={handleCopy}>
           {copyState === 'copied' ? (
             <>
